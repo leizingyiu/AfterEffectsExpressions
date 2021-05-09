@@ -1,30 +1,41 @@
 /* by leizingyiu */
 /* 
-"Created": "2021/05/10 02:18:20",
-"Last modified": "2021/05/18 02:23:14"
+"Created": "2021/05/09 23:59:06",
+"Last modified": "2021/05/18 02:47:31"
 */
 
-var freq = 3;
-var decay = 5;
-var amp=1;
+var freq = 3;	/*频率*/
+var decay = 5;	/*衰减*/
+var amp=1;	/*振幅*/
 
-var n = 0;
-if (thisProperty.numKeys >= 2) {
-	n = thisProperty.numKeys;
-}
-if (thisProperty.numKeys>1 && time>key(n).time) {
+/*——————————————修改以上三个参数调整回弹效果——————————————————*/
+
+var n = 1;
+if (numKeys >= 2) {
+	n = nearestKey(time).index;
+	if (key(n).time > time  ) {
+		n--
+	}
 	var t = time - key(n).time;
 	var w = freq * Math.PI * 2;
 	var newT=amp * (Math.sin(t * w) / Math.exp(decay * t) / w);
 	var T=key(n).time-Math.abs(newT);
+}else{
+	T=time;
+}
 
-	var p=points();
-	var i=inTangents();
-	var o=outTangents();
-	var p2=points(T);		
-	var i2=inTangents(T);
-	var o2=outTangents(T);
+var p=points();
+var i=inTangents();
+var o=outTangents();
+var p2=points(T);		
+var i2=inTangents(T);
+var o2=outTangents(T);
 
+var pBoo=p.toString()==points(key(n).time).toString();
+var iBoo=i.toString()==inTangents(key(n).time).toString();
+var oBoo=o.toString()==outTangents(key(n).time).toString();
+
+if (pBoo&&iBoo&oBoo) {
 	if(newT<0){
 		createPath(p2,i2,o2,false);
 	}else{
