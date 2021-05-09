@@ -1,4 +1,8 @@
 /* by leizingyiu */
+/* 
+"Created": "2021/05/10 02:18:20",
+"Last modified": "2021/05/18 02:23:14"
+*/
 
 var freq = 3;
 var decay = 5;
