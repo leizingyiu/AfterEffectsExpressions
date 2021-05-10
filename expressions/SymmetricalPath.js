@@ -6,6 +6,9 @@ Paste this expression in any path property, to generate Symmetrical path based o
 by Leizingyiu
 
 */
+
+/*转载须署名，保留原始链接*/
+
 var p=points();
 var i=inTangents();
 var o=outTangents();
