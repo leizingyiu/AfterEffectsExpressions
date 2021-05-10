@@ -1,8 +1,9 @@
 /* by leizingyiu */
 /* 
 "Created": "2021/05/09 23:59:06",
-"Last modified": "2021/05/18 02:47:31"
+"Last modified": "2021/05/10 11:45:52"
 */
+/*转载须署名*/
 
 var freq = 3;	/*频率*/
 var decay = 5;	/*衰减*/
