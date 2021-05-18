@@ -1,13 +1,11 @@
-/* by leizingyiu
-base on http://www.motionscript.com/articles/bounce-and-overshoot.html */
-
 /* 
 "Created": "2021/05/10 13:03:26",
-"Last modified": "2021/05/17 22:32:40",
+"Last modified": "2021/05/18 13:06:37"
 */
 
 /*转载须署名，保留原始链接*/
-
+/* by leizingyiu */
+/* base on http://www.motionscript.com/articles/bounce-and-overshoot.html */
 freq = 3;
 decay = 5;
 

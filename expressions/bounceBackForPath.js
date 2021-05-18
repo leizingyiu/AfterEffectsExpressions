@@ -1,10 +1,10 @@
 /* 
 "Created": "2021/05/10 20:23:52",
-"Last modified": "2021/05/17 22:32:26",
+"Last modified": "2021/05/18 13:06:21"
 */
 
-/* by leizingyiu
-base on http://www.motionscript.com/articles/bounce-and-overshoot.html */
+/* by leizingyiu */
+/* base on http://www.motionscript.com/articles/bounce-and-overshoot.html */
 obj = thisProperty;
 e = 0.7;
 g = 5000;
