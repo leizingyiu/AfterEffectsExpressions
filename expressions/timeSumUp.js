@@ -1,5 +1,5 @@
 /*
-当用 time*value 想变速，调小数值发现不是变慢，而是倒车；
+当用 time*value 想变速，调小数值发现不是踩刹车，而是马上倒车；
 这时候用这个 timeSumUp 就可以把value作为速度调节了。
 （实际上就是数学的积分）
 
@@ -32,8 +32,7 @@ function timeSumUp(t, prop) {
     if (f == 0) {
         return prop.valueAtTime(0) * thisComp.frameDuration;
     } else {
-        T = framesToTime(f - 1);
-        return valueAtTime(t) * thisComp.frameDuration + timeSumUp(T, prop);
+        return valueAtTime(t) * thisComp.frameDuration + timeSumUp(framesToTime(f - 1), prop);
     }
 }
 timeSumUp(time, thisProperty);
