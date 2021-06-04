@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title> AfterEffects Expressions by Leizingyiu </title>
+
+    <link rel="stylesheet" type="text/css" href="./css/tbDefaultCss.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <link rel="stylesheet" href="./css/markdown.css">
+
+</head>
+
+<body>
+    <ul id="main">
+        <li id="catalog">
+            <h1 id='title' onclick="window.location='..'"></h1>
+            <dl id="contents">
+                <dt>contents</dt>
+                <dd class="cn">
+                    <ul class="cn">
+                        <li><a href="javascript:void 0">AE路径弹性表达式</a></li>
+                    </ul>
+                    <ul class="en">
+                        <li><a href="javascript:void 0">a</a></li>
+                    </ul>
+                </dd>
+            </dl>
+            <!-- <dl id="expressions">
+                <dt>expressions</dt>
+                <dd>
+                    <ul>
+                        <li><a href="javascript:void 0">a</a></li>
+                        <li><a href="javascript:void 0">b</a></li>
+                        <li><a href="javascript:void 0">c</a></li>
+                        <li><a href="javascript:void 0">d</a></li>
+                        <li><a href="javascript:void 0">e</a></li>
+                    </ul>
+                </dd>
+            </dl> -->
+        </li>
+        <li id="content">
+            <section>
+                <h1></h1>
+                <p></p>
+            </section>
+            <div class="markdown-body"></div>
+        </li>
+        <li id="expression"></li>
+    </ul>
+
+
+
+
+    <!-- 读取markdown解释器 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- 获取页面所需脚本 -->
+    <script>
+        /*判断是否本地*/
+        var script = document.createElement('script');
+        if (location.host.match(/[a-zA-Z]/g)) {
+            script.src = 'https://leizingyiu.github.io/AfterEffectsExpressions/js/script.js';
+        } else {
+            script.src = '../js/script.js';
+        }
+        document.querySelector('body').appendChild(script);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,277 @@
+* {
+  transition: all 0.15s !important;
+}
+
+/* html,
+body {
+  overflow: scroll;
+  height: 100%;
+} */
+body {
+  font-size: 2vmin;
+  line-height: 1.5em;
+  height: 100%;
+  overflow: hidden;
+}
+
+#main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+#main>li {
+  display: block;
+  border: 0.5px solid #eee;
+}
+
+#main>li>* {
+  padding: 1rem;
+}
+
+#main #catalog {
+  flex: 1 0 auto;
+  overflow: scroll;
+  min-width: 144px;
+  line-height: 1.5em;
+}
+#main #catalog dd.cn .cn,#main #catalog dd.en .en{
+  display: auto;
+}
+#main #catalog dd.en .cn,#main #catalog dd.cn .en{
+  display: none;
+}
+
+
+
+
+/* #main #catalog,#main #content{
+  padding: 1rem;
+}
+#main #expression pre{
+  padding: 1rem;
+} */
+
+#main #content,
+#main #expression {
+  flex: 2 1 auto;
+  max-width: 50vw;
+}
+
+#main #catalog #title {
+  font-size: 1.25rem;
+  line-height: 1.25em;
+  cursor: pointer;
+}
+
+#main #catalog dt {
+  font-size: 1.25rem;
+  padding-bottom: 0.5rem;
+  position: relative;
+  cursor: pointer;
+}
+
+#main #catalog dt::before {
+  content: ' ';
+  display: block;
+  width: 0.3em;
+  height: 0.3em;
+  position: absolute;
+  border-bottom: 1px solid #666;
+  border-right: 1px solid #666;
+  right: 0;
+  top: 30%;
+  transform: rotate(45deg) ;
+  transition:transform 0.2s!important;
+}
+
+#main #catalog dl.fold dd {
+  height: 0;
+  overflow: hidden;
+}
+
+#main #catalog dl.fold dt::before {
+  transform: rotate(135deg);
+  transition:transform 0.2s!important;
+}
+
+#main #content div {
+  height: 100%;
+  overflow: scroll;
+}
+
+
+#main #expression {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  height: 100%;
+  overflow: hidden;
+
+}
+
+
+
+
+/* ————————————  exprossions before by pre */
+/* 
+#main #expression div{
+  flex: 1;
+  overflow: scroll;
+  position: relative;
+}
+
+#main #expression div pre{
+  height: 100%;
+  overflow: scroll;
+
+  padding: 0.5rem;
+  white-space: pre-wrap;
+  border: 1px solid #ddd;
+  opacity: 0.2;
+}
+
+#main #expression pre:before{
+  content: attr(title);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 2rem;
+  z-index: -999;
+  opacity: 1;
+}
+
+
+#main #expression div pre:hover{
+  opacity: 1;
+}
+#main #expression div pre:hover::before{
+opacity: 0.05;
+}
+*/
+
+
+
+/* ————————————  exprossions before by div */
+
+#main #expression div {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  padding: 0 !important;
+}
+
+#main #expression div:before {
+
+  content: attr(title);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  z-index: -999;
+  letter-spacing: 0.1em;
+  font-weight: 100;
+  transition: 0.33s !important;
+}
+
+#main #expression div pre {
+  height: 100%;
+  overflow: scroll;
+  white-space: pre-wrap;
+  opacity: 0.2;
+  padding: 1rem;
+}
+
+#main #expression div:hover pre,
+#main #expression div:hover button {
+  opacity: 1;
+}
+
+#main #expression div:hover::before {
+  opacity: 0.05;
+  letter-spacing: 2em;
+  font-size: 0.75rem;
+  transition: 0.5s !important;
+}
+
+#main #expression div button.copy {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform:uppercase;
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  cursor: pointer;
+
+  transform: translate(0px, 2px);
+  box-shadow: 0 2px 0 #808080, 0 2px 4px rgb(17 109 152 / 24%);
+  border: 2px solid #808080;
+  background: rgba(255,255,255, 0.6);
+
+  transition: transform 0.2s, box-shadow 0.2s !important;
+  opacity: 0.2;
+}
+
+#main #expression div:hover button.copy {
+  transform: translate(0px,0px);
+  box-shadow: 0 4px 0 #178fe6, 0 4px 6px rgb(17 109 152 / 32%);
+  background: none;
+  border: 2px solid #178fe6;
+  background: rgba(255,255,255,0.9) ;
+  padding: 0.5em 1em;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  opacity: 1;
+}
+
+#main #expression div:hover button.copy:hover {
+  transform: translate(0px, 2px);
+  box-shadow: 0 2px 0 #178fe6, 0 2px 4px rgb(17 109 152 / 24%);
+}
+
+#main #expression div:hover button.copy:active {
+  transform: translate(0px, 4px);
+  box-shadow: 0 0px 0 #0c8deb, 0 0px 6px rgb(71 196 255 / 80%);
+  border: 2px solid #0c8deb;
+
+}
+
+
+#main #expression:hover div:hover{
+opacity: 1;
+}
+#main #expression:hover div::before{
+  opacity: 0.2;
+;}
+
+
+/* ———————————— exprossions before title*/
+
+
+
+
+
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.32);
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 0;
+  background: rgba(0, 0, 0, 0);
+}

@@ -1,0 +1,39 @@
+<body>
+    <div class="A">
+        <div class="B">
+            B
+            B
+            B
+            B
+            B
+
+        </div>
+    </div>
+    <div class="A"></div>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .A {
+            /* height: 50%; */
+            flex: 1 auto;
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .B {
+            height: 200vh;
+        }
+
+        .B::before {
+            content: '111';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+        }
+    </style>
+</body>
