@@ -1,11 +1,24 @@
 /* 
 "Created": "2021/05/10 13:03:26",
-"Last modified": "2021/06/04 22:47:46",
+"Last modified": "2021/06/05 04:04:05",
 */
 
-/*转载须署名，保留原始链接*/
+/*转载须署名，请保留此页面原始链接*/
 /* by leizingyiu */
 /* base on http://www.motionscript.com/articles/bounce-and-overshoot.html */
+
+/**
+ * freq是反弹频率
+ * decay是衰减
+ * 这两个值的详细解释，请查看base on 链接
+ * 
+ * 由于路径属性无法获取velocity，
+ * 所以使用deltaT作为关键帧前速度的速度取样时间
+ * 
+ * 默认情况下，k是deltaT的倒数
+ * 如果需要突出反弹效果，可以将k调大
+ */
+
 freq = 3;
 decay = 5;
 
