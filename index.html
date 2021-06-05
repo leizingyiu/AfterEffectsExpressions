@@ -13,7 +13,8 @@
 <body>
     <ul id="main">
         <li id="catalog">
-            <h1 id='title' onclick="window.location='..'"></h1>
+            <h1 id='title'
+                onclick="window.location='..'+ String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');"></h1>
             <dl id="contents">
                 <dt>contents</dt>
                 <dd class="cn">
