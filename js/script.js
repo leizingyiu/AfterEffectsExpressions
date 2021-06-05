@@ -165,7 +165,9 @@ function writeTitleAndExpressions(content) {
                 console.log(url);
                 let script = '';
                 /**读取js，写入expressions */
-                sendGETRequest('../expressions/' + js, {}, 'text', function () {
+
+                let pathname = String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
+                sendGETRequest('..' + pathname + '/expressions/' + js, {}, 'text', function () {
                     var content = arguments[arguments.length - 1]['response'];
                     var status = arguments[arguments.length - 1]['status'];
                     script = status == '200' ? content : '大概是写错东西了吧。･ﾟ･(つд`ﾟ)･ﾟ･';
