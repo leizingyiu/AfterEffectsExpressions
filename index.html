@@ -73,7 +73,28 @@
         document.querySelector('body').appendChild(script);
     </script>
 
-
+    <script>
+        function typing(selector) {
+            let dom = document.querySelector(selector);
+            if ('undefined' == typeof i) { i = 0; }
+            if ('undefined' == typeof timer) { timer = 0; }
+            if ('undefined' == typeof str) { str = dom.innerText.replace(/\n/g, '➾'); }
+            if (i <= str.length) {
+                dom.innerHTML = str.slice(0, i++).replace(/➾/g, '<br>') + '_';
+                let ranTime = Math.random() * 200;
+                var nextTyping = function () { typing(selector) };
+                timer = setTimeout(nextTyping, ranTime)
+            }
+            else {
+                dom.innerHTML = str.replace(/➾/g, '<br>');
+                clearTimeout(timer)
+            }
+        };
+        document.querySelector('#content').onmouseover = function () {
+            typing('.markdown-body h1');
+            document.querySelector('#content').onmouseover = function () { };
+        };
+    </script>
 </body>
 
 </html>

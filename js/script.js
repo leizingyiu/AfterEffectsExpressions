@@ -274,6 +274,17 @@ function replaceMarkedHTML() {
     }
 }
 
+
+
+
+function typingH1WhenHomePage(content) {
+    console.log(pathname == '');
+    content = pathname == '' ? content + "<script>function typing(selector){let dom=document.querySelector(selector);if('undefined'==typeof i){i=0}if('undefined'==typeof timer){timer=0}if('undefined'==typeof str){str=dom.innerText.replace(/\n/g,'➾')}if(i<=str.length){dom.innerHTML=str.slice(0,i++).replace(/➾/g,'<br>')+'_';let ranTime=Math.random()*100;var nextTyping=function(){typing(selector)};timer=setTimeout(nextTyping,ranTime)}else{dom.innerHTML=str.replace(/➾/g,'<br>');clearTimeout(timer)}}; typing('.markdown-body h1')</script>" : content;
+    console.log(content);
+    return content;
+}
+
+
 var htmlReplacement = replaceMarkedHTML(imgSrcToLocal, imgSrcToDataSrc, imgZoonToWidth, writeTitleAndExpressions, refreshMathJax, solveError);
 /* 读取md内容，对md内容修改再写入 */
 
