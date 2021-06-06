@@ -1,3 +1,6 @@
+let debuging = false;
+console.log = debuging ? console.log : (() => void 0);
+
 /** 页面标题设置 */
 document.querySelector('#title').innerText = document.title.replace(/ /g, '\n');
 
@@ -15,6 +18,7 @@ function getSearchJson() {
     return param;
 };
 var search = getSearchJson();
+var pathname = String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
 
 /* 获取网址关于语言的参数 */
 function getLangSuffixFromSearch() {
@@ -30,16 +34,25 @@ function getLangSuffixFromSearch() {
 /* 发送请求的函数 */
 function sendGETRequest(url, urlReplaceObj, type, callback) {
     let xhr = new XMLHttpRequest();
-    let urlReplaceObjKey = Object.keys(urlReplaceObj);
-    for (let i in urlReplaceObjKey) {
-        url = url.replace(urlReplaceObjKey[i], urlReplaceObj[urlReplaceObjKey[i]]);
+
+    console.log(urlReplaceObj);
+    console.log((JSON.stringify(urlReplaceObj) != "{}") && urlReplaceObj != undefined);
+
+    if (JSON.stringify(urlReplaceObj) != "{}" && urlReplaceObj != undefined) {
+        let urlReplaceObjKey = Object.keys(urlReplaceObj);
+        for (let i in urlReplaceObjKey) {
+            url = url.replace(urlReplaceObjKey[i], urlReplaceObj[urlReplaceObjKey[i]]);
+        }
     }
     xhr.open('GET', url);
     xhr.responseType = type;
     let arg = [...arguments];
     arg.pop();
     xhr.onload = function () {
+        // console.log(url);
+        // console.log(xhr['status']);
         callback(...arg, xhr);
+
     };
     xhr.send();
 };
@@ -49,11 +62,11 @@ var writeMarkDown = function (cssSelector, fn) {
     return function () {
         var content = arguments[arguments.length - 1]['response'];
         var status = arguments[arguments.length - 1]['status'];
-        if (status == 200) {
-            document.querySelector(cssSelector).innerHTML = fn(marked(content));
-        } else {
-            document.querySelector(cssSelector).innerText = '\n(´ﾟдﾟ`)\n 这个页面还没做，快了快了\n (๑•́ ₃ •̀๑)';
-        }
+        //if (status == 200) {
+        document.querySelector(cssSelector).innerHTML = fn(marked(content));
+        //} else {
+        //document.querySelector(cssSelector).innerText = '\n(´ﾟдﾟ`)\n 这个页面还没做，快了快了\n (๑•́ ₃ •̀๑)';
+        //}
     }
 };
 
@@ -134,6 +147,7 @@ function writeTitleAndExpressions(content) {
     tempDiv.className = 'temp'; tempDiv.style.width = '1px'; tempDiv.style.height = '1px'; tempDiv.innerHTML = content;
     document.querySelector('body').appendChild(tempDiv);
 
+
     if (tempDiv.querySelector('#parameter') != null) {
 
         var parameter = '';
@@ -141,6 +155,7 @@ function writeTitleAndExpressions(content) {
             parameter = JSON.parse(tempDiv.querySelector('#parameter').innerHTML);
         } catch (err) {
             contentHeaderDom.style.display = 'none';
+            console.log('#parameter error');
             return content;
         }
         contentHeaderDom.style.display = 'inherit';
@@ -155,19 +170,50 @@ function writeTitleAndExpressions(content) {
 
         expressionsDom.innerHTML = '';
         if (parameter.hasOwnProperty('expressions')) {
-            [...parameter['expressions']].map(js => (function () {
+            Object.keys(parameter['expressions']).map(js => (function () {
+
                 let div = document.createElement('div');
                 let pre = document.createElement('pre');
-                let button = document.createElement('button');
-                button.innerText = 'copy';
-                button.className = 'copy';
-                let url = '../expressions/' + js;
-                console.log(url);
+                let copyButton = document.createElement('button');
+                copyButton.innerText = copyButton.className = 'copy';
+
+                let buttonArr = [], n = 0;
+                let buttonFn = function (text, target) {
+                    buttonArr[buttonArr.length] = document.createElement('button');
+                    buttonArr[buttonArr.length - 1].innerText = text;
+                    buttonArr[buttonArr.length - 1].setAttribute('target', target);
+                    buttonArr[buttonArr.length - 1].setAttribute('style', 'bottom:' + (1 + n * 3) + 'rem;');
+                    n = n + 1;
+                    buttonArr[buttonArr.length - 1].onclick = function () {
+                        let form = document.createElement('form');
+                        form.setAttribute('method', 'get');
+                        form.setAttribute('action', this.getAttribute('target'));
+                        document.body.appendChild(form);
+                        form.submit();
+                        form.parentElement.removeChild(form);
+                    };
+                }
+                Object.keys(parameter['expressions'][js]).map((key, idx) => (function () {
+                    if (parameter['expressions'][js][key] instanceof Array) {
+                        parameter['expressions'][js][key].map(v => (function () {
+                            let text = key + ' ' + v.match(/(?<=\.).*/);
+                            let target = '..' + pathname + '/' + key + '/' + v;
+                            buttonFn(text, target);
+                        })())
+                    } else {
+                        let text = key + ' ' + parameter['expressions'][js][key].match(/(?<=\.).*/);
+                        let target = '..' + pathname + '/' + key + '/' + parameter['expressions'][js][key];
+                        buttonFn(text, target);
+                    }
+                })())
+
+                let expressionUrl = '..' + pathname + '/expressions/' + js;
+                console.log(expressionUrl);
+
                 let script = '';
                 /**读取js，写入expressions */
 
-                let pathname = String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
-                sendGETRequest('..' + pathname + '/expressions/' + js, {}, 'text', function () {
+                sendGETRequest(expressionUrl, {}, 'text', function () {
                     var content = arguments[arguments.length - 1]['response'];
                     var status = arguments[arguments.length - 1]['status'];
                     script = status == '200' ? content : '大概是写错东西了吧。･ﾟ･(つд`ﾟ)･ﾟ･';
@@ -176,9 +222,17 @@ function writeTitleAndExpressions(content) {
                     expressionsDom.appendChild(div);
                     div.appendChild(pre);
 
-                    button.onclick = function () { copyStr(script) };
-                    div.appendChild(button);
+                    copyButton.onclick = function () {
+                        copyStr(script)
+                    };
+                    div.appendChild(copyButton);
+
+                    buttonArr.map(b => (function () {
+                        div.appendChild(b);
+                    })());
                 });
+
+
 
             })());
         }
@@ -189,7 +243,28 @@ function writeTitleAndExpressions(content) {
     //console.log(content);
     return content;
 }
-function replaceHTML() {
+
+function solveError(content) {
+    let err = content.match(/<title>Error<\/title>/g);
+    if (err != null) {
+        content = '<p style=" width:100%; text-align:center; line-height:2em;"> (´ﾟдﾟ`)    </br> 这个页面还没做，快了快了 </br>    (๑•́ ₃ •̀๑) </p>';
+        contentHeaderDom.style.display = 'none';
+        expressionsDom.innerHTML = content;
+
+    } else {
+        contentHeaderDom.style.display = 'block';
+    }
+    return content;
+}
+
+function refreshMathJax(content) {
+    let before = '<img src="http://latex.codecogs.com/gif.latex?';
+    let after = '"/>';
+    //console.log(content);
+    return content.replace(/\$\$([\s\S]*?)\$\$/g, '<br>' + before + '$1' + after + '<br>');
+}
+
+function replaceMarkedHTML() {
     var arg = arguments;
     return function (content) {
         for (let i = 0; i < arg.length; i++) {
@@ -199,12 +274,12 @@ function replaceHTML() {
     }
 }
 
-var htmlReplacement = replaceHTML(imgSrcToLocal, imgSrcToDataSrc, imgZoonToWidth, writeTitleAndExpressions);
+var htmlReplacement = replaceMarkedHTML(imgSrcToLocal, imgSrcToDataSrc, imgZoonToWidth, writeTitleAndExpressions, refreshMathJax, solveError);
 /* 读取md内容，对md内容修改再写入 */
 
 
 /* 文章选择 */
-var contents = document.getElementById('contents');
+/*var contents = document.getElementById('contents');
 [...contents.querySelectorAll('li a')].map(i => i.onclick = function () {
     let langSuffix = getLangSuffixFromSearch();
     window.history.replaceState({}, null, '?content=' + i.innerText + (langSuffix != '' ? '&lang=' +
@@ -212,25 +287,40 @@ var contents = document.getElementById('contents');
     sendGETRequest('./contents/' + i.innerText + '.md', {}, 'text', writeMarkDown('#content div', htmlReplacement));
 
     //document.querySelector('#main').className = 'detail';
-});
+});*/
 
 
-if (search.hasOwnProperty('content')) {
-    let langSuffix = getLangSuffixFromSearch();
-    sendGETRequest('./contents/' + search['content'] + '.md', {},
-        'text', writeMarkDown('#content div', htmlReplacement));
+var catalog = document.getElementById('catalog');
+[...catalog.querySelectorAll('dl')].map(dl => (function () {
+    dl.querySelector('dt').innerText = dl.id;
+    [...dl.querySelectorAll('li a')].map(i => i.onclick = function () {
+        let langSuffix = getLangSuffixFromSearch();
+        window.history.replaceState({}, null, '?' + dl.id + '=' + i.innerText + (langSuffix != '' ? '&lang=' +
+            langSuffix : ''));
+        sendGETRequest('./' + dl.id + '/' + i.innerText + '.md', {}, 'text', writeMarkDown('#content div', htmlReplacement));
 
-    document.querySelector('#main').className = 'detail';
-}
+        //document.querySelector('#main').className = 'detail';
+    })
+})())
+
+/**页面加载时如果url存在参数，读取参数指向的内容， */
+Object.keys(search).map(key => (function () {
+    Object.keys(search).map(key => (function () {
+        if (document.querySelector('#' + key)) {
+            sendGETRequest('./' + key + '/' + search[key] + '.md', {}, 'text', writeMarkDown('#content div', htmlReplacement));
+        }
+    })());
+})());
 
 if (Object.keys(search).length == 0) {
-    sendGETRequest('./contents/index.md', {},
-        'text', writeMarkDown('#content div', htmlReplacement));
+    sendGETRequest('./contents/index.md', {}, 'text', writeMarkDown('#content div', htmlReplacement));
+
 }
 
 /* catalog ul dt onclick */
-var catalogDt = document.querySelectorAll('#contents dt');
+var catalogDt = document.querySelectorAll('#catalog dt');
 [...catalogDt].map(i => i.onclick = function () {
+    console.log(this);
     i.parentElement.className = i.parentElement.className == '' ? 'fold' : '';
 })
 

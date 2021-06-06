@@ -99,6 +99,12 @@ body {
   height: 100%;
   overflow: scroll;
 }
+#main #content div::after{
+  content: '';
+  width: 100%;
+  height: 10vh;
+  display: block;
+}
 
 
 #main #expression {
@@ -143,7 +149,6 @@ body {
   opacity: 1;
 }
 
-
 #main #expression div pre:hover{
   opacity: 1;
 }
@@ -151,9 +156,6 @@ body {
 opacity: 0.05;
 }
 */
-
-
-
 /* ————————————  exprossions before by div */
 
 #main #expression div {
@@ -161,10 +163,16 @@ opacity: 0.05;
   overflow: hidden;
   position: relative;
   padding: 0 !important;
+  border-bottom: 2px solid #eee!important;
+  
+ 
+}
+#main #expression div:last-of-type{
+  border: none;
 }
 
-#main #expression div:before {
 
+#main #expression div:before {
   content: attr(title);
   position: absolute;
   top: 50%;
@@ -189,7 +197,6 @@ opacity: 0.05;
 #main #expression div:hover button {
   opacity: 1;
 }
-
 #main #expression div:hover::before {
   opacity: 0.05;
   letter-spacing: 2em;
@@ -197,49 +204,83 @@ opacity: 0.05;
   transition: 0.5s !important;
 }
 
-#main #expression div button.copy {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
+#main #expression div button {
   font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform:uppercase;
   padding: 0.5em 1em;
   border-radius: 0.25em;
   cursor: pointer;
-
   transform: translate(0px, 2px);
-  box-shadow: 0 2px 0 #808080, 0 2px 4px rgb(17 109 152 / 24%);
-  border: 2px solid #808080;
-  background: rgba(255,255,255, 0.6);
-
   transition: transform 0.2s, box-shadow 0.2s !important;
   opacity: 0.2;
 }
 
-#main #expression div:hover button.copy {
+#main #expression div button {
+  left: 1rem;
+  position: absolute;
+  box-shadow: 0 2px 0 #808080, 0 2px 4px rgb(17 109 152 / 24%);
+  border: 2px solid #808080;
+  background: rgba(255,255,255, 0.6);
+}
+/* __ */
+
+#main #expression div:hover button {
   transform: translate(0px,0px);
-  box-shadow: 0 4px 0 #178fe6, 0 4px 6px rgb(17 109 152 / 32%);
-  background: none;
-  border: 2px solid #178fe6;
-  background: rgba(255,255,255,0.9) ;
   padding: 0.5em 1em;
   font-size: 0.8rem;
   border-radius: 4px;
   opacity: 1;
 }
 
-#main #expression div:hover button.copy:hover {
+#main #expression div:hover button {
+  box-shadow: 0 4px 0 #6478ea, 0 4px 6px rgb(17 109 152 / 32%);
+  border: 2px solid #6478ea;
+  background: rgba(255,255,255,0.9) ;
+}
+/* __ */
+
+#main #expression div:hover button:hover {
   transform: translate(0px, 2px);
+}
+
+#main #expression div:hover button:hover {
+  box-shadow: 0 2px 0 #6478ea, 0 2px 4px rgb(17 109 152 / 24%);
+}
+/* __ */
+
+#main #expression div:hover button:active {
+  transform: translate(0px, 4px);
+}
+
+#main #expression div:hover button:active {
+  box-shadow: 0 0px 0 #475edf, 0 0px 6px rgb(71 196 255 / 80%);
+  border: 2px solid #475edf;
+}
+/* __ */
+#main #expression div button.copy {
+  position: absolute;
+  right: 1rem!important;
+  left: inherit!important;
+  bottom: 1rem;
+  box-shadow: 0 2px 0 #808080, 0 2px 4px rgb(17 109 152 / 24%);
+  border: 2px solid #808080;
+  background: rgba(255,255,255, 0.6);
+}
+#main #expression div:hover button.copy {
+  box-shadow: 0 4px 0 #178fe6, 0 4px 6px rgb(17 109 152 / 32%);
+  border: 2px solid #178fe6;
+  background: rgba(255,255,255,0.9) ;
+}
+#main #expression div:hover button.copy:hover {
   box-shadow: 0 2px 0 #178fe6, 0 2px 4px rgb(17 109 152 / 24%);
 }
-
 #main #expression div:hover button.copy:active {
-  transform: translate(0px, 4px);
   box-shadow: 0 0px 0 #0c8deb, 0 0px 6px rgb(71 196 255 / 80%);
   border: 2px solid #0c8deb;
-
 }
+
+/** */
 
 
 #main #expression:hover div:hover{
@@ -248,7 +289,6 @@ opacity: 1;
 #main #expression:hover div::before{
   opacity: 0.2;
 ;}
-
 
 /* ———————————— exprossions before title*/
 

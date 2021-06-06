@@ -38,6 +38,15 @@
                     </ul>
                 </dd>
             </dl> -->
+            <dl id='FAQ'>
+                <dt>FAQ</dt>
+                <dd>
+                    <ul>
+                        <li><a href="javascript:void 0">如何粘贴表达式</a></li>
+                        <li><a href="javascript:void 0">如何使用 *.ffx</a></li>
+                    </ul>
+                </dd>
+            </dl>
         </li>
         <li id="content">
             <section>
@@ -49,11 +58,8 @@
         <li id="expression"></li>
     </ul>
 
-
-
-
-    <!-- 读取markdown解释器 -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 先读取markdown解释器，才能通过script.js，读取解释md文档 -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <!-- 获取页面所需脚本 -->
     <script>
@@ -66,6 +72,8 @@
         }
         document.querySelector('body').appendChild(script);
     </script>
+
+
 </body>
 
 </html>
