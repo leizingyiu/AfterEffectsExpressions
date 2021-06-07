@@ -171,14 +171,14 @@ observer.observe(document.querySelector('html'), {
 function imgSrcToLocal(content) {
     return location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content.replace(/(?<=<img.*?src=['"])(https:\/\/leizingyiu\.github\.io\/afterEffectsPresets)([^'"]*)(?=['"][^>]+>)/g, '..$2') : content;
 }
-
+/* TODO!!!  */
 function imgSrcToOnline(content) {
     let a = content.match(/(?<=<((img)|(video)).*?src=['"])(\.\.)([^'"]*)(?=['"][^>]+>)/g);
     console.log(a);
     let b = content.match(/(?<=<((img)|(video)).*?src=['"])(\.\.)([^'"]*)(?=['"][^>]+>)/g).map(function (txt) { return txt.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)([^'"]*)(?=['"][^>]+>)/g, location.protocol + "//" + location.hostname + location.pathname + '$3') });
     console.log(b);
 
-    return !location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)([^'"]*)(?=['"][^>]+>)/g, location.protocol + "//" + location.hostname + location.pathname + '$3') : content;
+    return !location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, location.protocol + "//" + location.hostname + location.pathname + '$1') : content;
 }
 
 function imgSrcToDataSrc(content) {
