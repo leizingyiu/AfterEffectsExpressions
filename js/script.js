@@ -173,7 +173,7 @@ function imgSrcToLocal(content) {
 }
 
 function imgSrcToOnline(content) {
-    return !location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)([^'"]*)(?=['"][^>]+>)/g, location.protocol + location.hostname + location.pathname + '$1') : content;
+    return !location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)([^'"]*)(?=['"][^>]+>)/g, location.protocol + location.hostname + location.pathname + '$2') : content;
 }
 
 function imgSrcToDataSrc(content) {
