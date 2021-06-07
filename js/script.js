@@ -172,6 +172,10 @@ function imgSrcToLocal(content) {
     return location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content.replace(/(?<=<img.*?src=['"])(https:\/\/leizingyiu\.github\.io\/afterEffectsPresets)([^'"]*)(?=['"][^>]+>)/g, '..$2') : content;
 }
 
+function imgSrcToOnline(content) {
+    return !location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)([^'"]*)(?=['"][^>]+>)/g, location.hostname + location.pathname + '$2') : content;
+}
+
 function imgSrcToDataSrc(content) {
     return content.replace(/(<img.*)(src=['"][^'"]*['"][^>]+>)/g, '$1data-$2');
 }
@@ -185,7 +189,6 @@ var contentHeaderDom = document.querySelector('#content section');
 var titleDom = document.querySelector('#content h1');
 var descriptionDom = document.querySelector('#content p');
 var expressionsDom = document.querySelector('#expression');
-
 function writeTitleAndExpressions(content) {
     var tempDiv = document.createElement('div');
     tempDiv.className = 'temp'; tempDiv.style.width = '1px'; tempDiv.style.height = '1px'; tempDiv.innerHTML = content;
@@ -329,7 +332,7 @@ function typingH1WhenHomePage(content) {
 }
 
 
-var htmlReplacement = replaceMarkedHTML(imgSrcToLocal, imgSrcToDataSrc, imgZoonToWidth, writeTitleAndExpressions, refreshMathJax, solveError);
+var htmlReplacement = replaceMarkedHTML(imgSrcToLocal, imgSrcToOnline, imgSrcToDataSrc, imgZoonToWidth, writeTitleAndExpressions, refreshMathJax, solveError);
 /* 读取md内容，对md内容修改再写入 */
 
 
