@@ -1,4 +1,4 @@
-let debuging = false;
+let debuging = true;
 console.log = debuging ? console.log : (() => void 0);
 
 /** 页面标题设置 */
@@ -96,21 +96,65 @@ function loadImg(el) {
         el.src = source;
     }
 }
-function checkImgLoading() {
+function checkLazyLoading() {
     imgs = document.querySelectorAll('img');
     Array.from(imgs).forEach(function (el) {
         if (isIn(el)) {
             loadImg(el);
         }
-    })
+    });
+    videos = document.querySelectorAll('video');
+    Array.from(videos).forEach(function (el) {
+        if (isIn(el)) {
+            loadImg(el);
+        }
+    });
 }
+function clickImgEnlarge() {
+    let imgs = document.querySelectorAll('img');
 
-window.onload = window.onscroll = function () {
-    console.log('scroll');
-    checkImgLoading();
+    [...imgs].map(function (img) {
+        img.style.cursor = 'zoom-in';
+        img.onclick = function () {
+            let div = document.createElement('div');
+            div.style = `
+width:100%;
+height:100%;
+position:fixed;
+top:0;
+left:0;
+background:rgba(0,0,0,0.8);
+cursor:zoom-out;
+`;
+
+            let i = document.createElement('img');
+            i.src = img.src;
+            i.style = `
+max-width:90vw;
+max-height:90vh;
+position:fixed;
+top:50%;
+left:50%;
+transform: translate(-50%,-50%);
+cursor:zoom-out;
+`;
+
+            div.onclick = i.onclick = function () {
+                div.parentElement.removeChild(div);
+            }
+
+            document.body.appendChild(div);
+            div.appendChild(i);
+        }
+
+    });
+}
+window.onload = window.onscroll = document.querySelector('.markdown-body').onscroll = function () {
+    checkLazyLoading();
+    clickImgEnlarge();
 }
 var observer = new MutationObserver(mutations => {
-    checkImgLoading();
+    checkLazyLoading();
 })
 observer.observe(document.querySelector('html'), {
     attributes: true,

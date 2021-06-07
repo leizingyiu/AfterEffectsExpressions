@@ -95,11 +95,12 @@ body {
   transition:transform 0.2s!important;
 }
 
-#main #content div {
+#main #content div.markdown-body {
   height: 100%;
   overflow: scroll;
 }
-#main #content div::after{
+
+#main #content div.markdown-body::after{
   content: '';
   width: 100%;
   height: 10vh;

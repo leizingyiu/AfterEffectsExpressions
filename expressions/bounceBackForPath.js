@@ -1,10 +1,11 @@
-/* 
-"Created": "2021/05/10 20:23:52",
-"Last modified": "2021/06/05 03:54:08",
-*/
-
-/* by leizingyiu */
+/* by leizingyiu https://leizingyiu.github.io/AfterEffectsExpressions/expressions/overShootForPath.js*/
 /* base on http://www.motionscript.com/articles/bounce-and-overshoot.html */
+/*转载须署名，请保留此页面原始链接*/
+
+/*
+"Created": "2021/05/10 20:23:52",
+"Last modified": "2021/06/07 21:41:53",
+*/
 
 /** 
  * e是衰减速度，e越小，衰减越快；e越大，衰减越慢；可以理解为阻力；

@@ -1,11 +1,11 @@
-/* 
-"Created": "2021/05/10 13:03:26",
-"Last modified": "2021/06/05 04:04:05",
-*/
-
-/*转载须署名，请保留此页面原始链接*/
-/* by leizingyiu */
+/* by leizingyiu https://leizingyiu.github.io/AfterEffectsExpressions/expressions/overShootForPath.js*/
 /* base on http://www.motionscript.com/articles/bounce-and-overshoot.html */
+/*转载须署名，请保留此页面原始链接*/
+
+/*
+"Created": "2021/05/10 13:03:26",
+"Last modified": "2021/06/07 21:41:11",
+*/
 
 /**
  * freq是反弹频率
