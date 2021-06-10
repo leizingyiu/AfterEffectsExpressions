@@ -182,7 +182,7 @@ function imgSrcToOnline(content) {
 }
 
 function imgSrcToDataSrc(content) {
-    return content.replace(/(<img.*)(src=['"][^'"]*['"][^>]+>)/g, '$1 data-$2');
+    return content.replace(/(<img.*)(src=['"][^'"]*['"][^>]*>)/g, '$1 data-$2');
 }
 
 function imgZoonToWidth(content) {
