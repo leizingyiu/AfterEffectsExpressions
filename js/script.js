@@ -1,4 +1,4 @@
-let debuging = true;
+let debuging = false;
 console.log = debuging ? console.log : (() => void 0);
 
 /** 页面标题设置 */
@@ -83,87 +83,137 @@ var writeHtml = function (cssSelector) {
 };
 
 
-/* lazy loading start */
-var imgs = document.querySelectorAll('img');
-function isIn(el) {
-    var bound = el.getBoundingClientRect();
-    var clientHeight = window.innerHeight;
-    return bound.top <= clientHeight;
-}
-function loadImg(el) {
-    if (!el.src) {
-        var source = el.dataset.src;
-        el.src = source;
+/* lazy loading start */{
+    var imgs = document.querySelectorAll('img');
+    function isIn(el) {
+        var bound = el.getBoundingClientRect();
+        var clientHeight = window.innerHeight;
+        return bound.top <= clientHeight;
     }
-}
-function checkLazyLoading() {
-    imgs = document.querySelectorAll('img');
-    Array.from(imgs).forEach(function (el) {
-        if (isIn(el)) {
-            loadImg(el);
+    function loadImg(el) {
+        if (!el.src) {
+            var source = el.dataset.src;
+            el.src = source;
         }
-    });
-    videos = document.querySelectorAll('video');
-    Array.from(videos).forEach(function (el) {
-        if (isIn(el)) {
-            loadImg(el);
-        }
-    });
-}
-function clickImgEnlarge() {
-    let imgs = document.querySelectorAll('img');
+    }
+    function checkLazyLoading() {
+        imgs = document.querySelectorAll('img');
+        Array.from(imgs).forEach(function (el) {
+            if (isIn(el)) {
+                loadImg(el);
+            }
+        });
+        videos = document.querySelectorAll('video');
+        Array.from(videos).forEach(function (el) {
+            if (isIn(el)) {
+                loadImg(el);
+            }
+        });
+    }
 
-    [...imgs].map(function (img) {
-        img.style.cursor = 'zoom-in';
-        img.onclick = function () {
+    /**img click enlarge start */
+    function clickImgEnlarge() {
+        let imgId = 'zooming';
+        let divId = "zoomingImg";
+
+        let imgs = document.querySelectorAll('img');
+        [...imgs].map(function (img) {
+            img.style.cursor = 'zoom-in';
+            img.onclick = function () { enlargeImg(img); };
+        });
+
+        function enlargeImg(img) {
+            img.id = imgId;
+
             let div = document.createElement('div');
-            div.style = `
-width:100%;
-height:100%;
-position:fixed;
-top:0;
-left:0;
-background:rgba(0,0,0,0.8);
-cursor:zoom-out;
-`;
+            div.id = divId;
 
             let i = document.createElement('img');
-            i.src = img.src;
-            i.style = `
-max-width:90vw;
-max-height:90vh;
-position:fixed;
-top:50%;
-left:50%;
-transform: translate(-50%,-50%);
-cursor:zoom-out;
-`;
 
+            i.src = img.src;
+            div.setAttribute('alt', img.alt);
             div.onclick = i.onclick = function () {
                 div.parentElement.removeChild(div);
+                return false;
             }
-
             document.body.appendChild(div);
             div.appendChild(i);
+            console.log(div.alt);
         }
+    }
+    function switchImage(leftBoolean) {
+        var imgId = 'zooming';
+        var divId = "zoomingImg";
+        var index = '';
+        var imgs = document.querySelectorAll('img');
+        var div = document.querySelector('#' + divId);
+        console.log(document.querySelector('#' + divId));
+        if (div != null) {
 
+            [...imgs].map((img, idx) => (function () {
+                if (img.id == imgId) {
+                    index = idx;
+                }
+            })());
+            console.log(index);
+            if (index !== '') {
+                console.log(document.querySelector('#' + divId + ' img'));
+                let targetImg;
+
+                if (leftBoolean == true && index != 0) {
+                    targetImg = imgs[index - 1];
+                } else if (leftBoolean == true && index == 0) {
+                    return false;
+                } else {
+                    targetImg = imgs[index + 1];
+                }
+
+                console.log(imgs[index] + '\n' + targetImg);
+                if (!targetImg.src) {
+                    targetImg.src = targetImg.getAttribute('data-src');
+                }
+                if (targetImg.currentSrc.indexOf(location.hostname) != -1) {
+                    imgs[index].id = '';
+                    targetImg.id = imgId;
+                    document.querySelector('#' + divId + ' img').src = targetImg.src;
+                    console.log(targetImg.alt);
+                    div.setAttribute('alt', targetImg.alt);
+                    console.log(div.alt);
+                }
+            }
+        }
+    }
+
+    function keyboard(event) {
+        let keycode = event.keyCode;
+        if (keycode == 37) {
+            console.log("⬅️");
+            switchImage(true);
+        }
+        if (keycode == 39) {
+            console.log("➡️");
+            switchImage(false);
+        }
+    }/**img click enlarge end */
+
+    document.addEventListener("keydown", keyboard);
+
+    window.onload = window.onscroll = document.querySelector('.markdown-body').onscroll = function () {
+        checkLazyLoading();
+        clickImgEnlarge();
+    }
+    var observer = new MutationObserver(mutations => {
+        checkLazyLoading();
+    })
+    observer.observe(document.querySelector('html'), {
+        attributes: true,
+        childList: true,
+        characterData: true,
+        subtree: true,
     });
 }
-window.onload = window.onscroll = document.querySelector('.markdown-body').onscroll = function () {
-    checkLazyLoading();
-    clickImgEnlarge();
-}
-var observer = new MutationObserver(mutations => {
-    checkLazyLoading();
-})
-observer.observe(document.querySelector('html'), {
-    attributes: true,
-    childList: true,
-    characterData: true,
-    subtree: true,
-});
 
-/* lazy loading end */
+/* lazy loading  /  img click enlarge end */
 
 
 /* 读取md内容，对md内容修改再写入 */
