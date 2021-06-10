@@ -182,7 +182,7 @@ function imgSrcToOnline(content) {
 }
 
 function imgSrcToDataSrc(content) {
-    return content.replace(/(<img.*)(src=['"][^'"]*['"][^>]+>)/g, '$1data-$2');
+    return content.replace(/(<img.*)(src=['"][^'"]*['"][^>]+>)/g, '$1 data-$2');
 }
 
 function imgZoonToWidth(content) {
@@ -364,9 +364,9 @@ function typingH1WhenHomePage(content) {
 }
 
 function preCopyButton(content) {
-    console.log(content);
+    //console.log(content);
     content = content.replace(/<pre>/g, '<pre onclick="copyStr(this.innerText)">');
-    console.log(content);
+    //console.log(content);
     return content;
 }
 var htmlReplacement = replaceMarkedHTML(imgSrcToLocal, imgSrcToOnline, imgSrcToDataSrc, imgZoonToWidth, writeTitleAndExpressions, refreshMathJax, preCopyButton, solveError);
