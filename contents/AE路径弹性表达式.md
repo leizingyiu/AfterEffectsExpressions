@@ -15,7 +15,8 @@
 }
 </script>
 
-# 原来的弹性表达式在路径用不了，</br>现在，可以了！！！  
+# 原来的弹性表达式在路径用不了，</br>现在，可以了！！！
+
 <br>
 <div style="background:#000;padding:2em 0;">
 <video src="../contents/video/bouncebackForPath_0.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video>
@@ -25,10 +26,12 @@
 
 ## 如何使用
 
-做好路径动画之后，把表达式粘贴进去 <sub>(点击右边 COPY 按钮复制)  
+做好路径动画之后，把表达式粘贴进去 <sub>(点击右边 COPY 按钮复制)
+
 <div style="background:#000;padding:1em;text-align: center;"><video src="../contents/video/overShootForPath_js_example.mp4" width="99%"  controls="controls" autoplay="autoplay" loop="loop" muted style=" display: inline;" ></video></div>
 
-或者做好路径动画之后，选中路径属性，双击预设 <sub>(右边 download 按钮下载，存去预设文件夹)</sub>  
+或者做好路径动画之后，选中路径属性，双击预设 <sub>(右边 download 按钮下载，存去预设文件夹)</sub>
+
 <div style="background:#000;padding:1em;text-align: center;">
 <video src="../contents/video/bounceBackForPath_ffx_example.mp4" width="99%"  controls="controls" autoplay="autoplay" loop="loop" muted   style=" display: inline;"></video></div>
 
@@ -44,9 +47,9 @@
 
 <p style="font-size:4rem;text-align:center">😎</p>
 
-但是到目前<sub>（2021 年 6 月 5 日）</sub>为止，我没发现有什么其他办法，让路径动画轻松产生弹性  
-<div><img src="../contents/img/overshootAndBounceback_expression_error.png" width="49%" style="display:inline"/><video  src="../contents/video/overshootAndBounceback_plugin_error.mp4"   controls="controls"   width="49%"  autoplay="autoplay" loop="loop" muted  style="width:'49%!important' ;display:inline"></video></div>
+但是到目前<sub>（2021 年 6 月 5 日）</sub>为止，我没发现有什么其他办法，让路径动画轻松产生弹性
 
+<div><img src="../contents/img/overshootAndBounceback_expression_error.png" width="49%" style="display:inline;margin:0!important;padding:0!important"/><video  src="../contents/video/overshootAndBounceback_plugin_error.mp4"   controls="controls"   width="49%"  autoplay="autoplay" loop="loop" muted  style="width:'49%!important' ;display:inline"></video></div>
 
 在 AE 推出路径相关表达式前，确实没有什么办法 🥺
 
@@ -54,7 +57,7 @@
 
 而在 AE2018<sub>（还是 2017 来着？）</sub>后，新增了<a href="https://helpx.adobe.com/cn/after-effects/using/expression-language-reference.html#%E8%AE%BF%E9%97%AE%E6%9C%89%E5%85%B3%E5%BD%A2%E7%8A%B6%E8%92%99%E7%89%88%E5%92%8C%E7%94%BB%E7%AC%94%E6%8F%8F%E8%BE%B9%E7%9A%84%E8%B7%AF%E5%BE%84%E7%82%B9%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%BC%95%E7%94%A8"> points、inTangents、outTangents、createPath</a> 等方法
 
-让路径自动产生弹性，成为可能 👍   
+让路径自动产生弹性，成为可能 👍
 
 <div style="background:#000;padding:1em;">
 <video src="../contents/video/bouncdbackForPath_1.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video>
@@ -74,7 +77,7 @@ amp = velocityAtTime(key(n).time - .001);
 
 <br>
 
-而 <a href="https://helpx.adobe.com/cn/after-effects/using/expression-language-reference.html#property_attributes_and_methods_expression_reference">velocity</a>  是为了获得关键帧之前极短时刻的速度
+而 <a href="https://helpx.adobe.com/cn/after-effects/using/expression-language-reference.html#property_attributes_and_methods_expression_reference">velocity</a> 是为了获得关键帧之前极短时刻的速度
 
 > velocity —— 返回类型：数值或数组。 返回当前时间的临时速度值。对于空间属性（例如位置），它返回正切矢量值。结果与属性的维度相同。
 
@@ -126,10 +129,4 @@ var pvArr = [...subArr(obj.points(keyNTime), obj.points(keyNTime-deltaTime))].ma
 
 剩下的事情，就是把原来只对 value 值做的处理，对路径的每一个 point<sub>（点）</sub>、 inTangent、outTangent<sub>（出入切线点，也就是平时画曲线的杠杆点）</sub> 逐一进行处理，就行了 👀
 
-
 <p style="font-size:3rem;text-align:center">而你只需要在右边下载保存，或者点击 [COPY] 复制，</br>就可以用啦🥳🥳🥳</p>
-
-
-
-
-
