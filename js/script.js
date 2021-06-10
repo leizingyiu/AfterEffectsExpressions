@@ -331,13 +331,45 @@ function replaceMarkedHTML() {
 
 function typingH1WhenHomePage(content) {
     console.log(pathname == '');
-    content = pathname == '' ? content + "<script>function typing(selector){let dom=document.querySelector(selector);if('undefined'==typeof i){i=0}if('undefined'==typeof timer){timer=0}if('undefined'==typeof str){str=dom.innerText.replace(/\n/g,'➾')}if(i<=str.length){dom.innerHTML=str.slice(0,i++).replace(/➾/g,'<br>')+'_';let ranTime=Math.random()*100;var nextTyping=function(){typing(selector)};timer=setTimeout(nextTyping,ranTime)}else{dom.innerHTML=str.replace(/➾/g,'<br>');clearTimeout(timer)}}; typing('.markdown-body h1')</script>" : content;
+    content = pathname == '' ? content + `
+    < script >
+    function typing(selector) {
+        let dom = document.querySelector(selector);
+        if ('undefined' == typeof i) {
+            i = 0;
+        }
+        if ('undefined' == typeof timer) {
+            timer = 0;
+        }
+        if ('undefined' == typeof str) {
+            str = dom.innerText.replace(/\n/g, '➾');
+        }
+        if (i <= str.length) {
+            dom.innerHTML = str.slice(0, i++).replace(/➾/g, '<br>') + '_';
+            let ranTime = Math.random() * 100;
+            var nextTyping = function() {
+                    typing(selector)
+                };
+            timer = setTimeout(nextTyping, ranTime)
+        } else {
+            dom.innerHTML = str.replace(/➾/g, '<br>');
+            clearTimeout(timer)
+        }
+    };
+    typing('.markdown-body h1')
+    < /script >
+    ` : content;
     console.log(content);
     return content;
 }
 
-
-var htmlReplacement = replaceMarkedHTML(imgSrcToLocal, imgSrcToOnline, imgSrcToDataSrc, imgZoonToWidth, writeTitleAndExpressions, refreshMathJax, solveError);
+function preCopyButton(content) {
+    console.log(content);
+    content = content.replace(/<pre>/g, '<pre onclick="copyStr(this.innerText)">');
+    console.log(content);
+    return content;
+}
+var htmlReplacement = replaceMarkedHTML(imgSrcToLocal, imgSrcToOnline, imgSrcToDataSrc, imgZoonToWidth, writeTitleAndExpressions, refreshMathJax, preCopyButton, solveError);
 /* 读取md内容，对md内容修改再写入 */
 
 
@@ -412,7 +444,7 @@ function copyStr(str) {
 var langSelector = document.getElementById('langSelector');
 [...langSelector.querySelectorAll('li a')].map(i => i.onclick = function () {
 
-    // 选择器class变更 
+    // 选择器class变更
     [...langSelector.querySelectorAll('li a')].map(j => j.className = 'off');
     this.className = 'on';
 
@@ -431,23 +463,23 @@ var langSelector = document.getElementById('langSelector');
 
 
 
-/*  滚动条美化  */
-let timer = null;
-let scrollDomSelector = 'body';
-let scrollingClassName = 'scrolling';
-document.querySelector(scrollDomSelector).onscroll = function () {
-    clearTimeout(timer) // 每次滚动前 清除一次
-    timer = setTimeout("Data()", 500);
-    m1 = document.documentElement.scrollTop || document.body.scrollTop;
-    document.querySelector(scrollDomSelector).className = scrollingClassName;
-    //console.log(scrollDomSelector + 'isScrolling');
-}
-function Data() {
-    m2 = document.documentElement.scrollTop || document.body.scrollTop;
-    if (m2 == m1) {
-        //console.log('滚动结束了');
-        document.querySelector(scrollDomSelector).className = document.querySelector(scrollDomSelector).className.replace(RegExp(scrollingClassName, 'g'), '');
+// /*  滚动条美化  */
+// let timer = null;
+// let scrollDomSelector = 'body';
+// let scrollingClassName = 'scrolling';
+// document.querySelector(scrollDomSelector).onscroll = function () {
+//     clearTimeout(timer) // 每次滚动前 清除一次
+//     timer = setTimeout("Data()", 500);
+//     m1 = document.documentElement.scrollTop || document.body.scrollTop;
+//     document.querySelector(scrollDomSelector).className = scrollingClassName;
+//     //console.log(scrollDomSelector + 'isScrolling');
+// }
+// function Data() {
+//     m2 = document.documentElement.scrollTop || document.body.scrollTop;
+//     if (m2 == m1) {
+//         //console.log('滚动结束了');
+//         document.querySelector(scrollDomSelector).className = document.querySelector(scrollDomSelector).className.replace(RegExp(scrollingClassName, 'g'), '');
 
-    }
-}
+//     }
+// }
 /*  滚动条美化  */

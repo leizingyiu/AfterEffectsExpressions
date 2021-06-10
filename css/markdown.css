@@ -169,6 +169,27 @@
 .markdown-body * {
   -webkit-print-color-adjust: exact;
 }
+
+
+.markdown-body h6{
+  margin-top:1em!important;
+  font-weight:500;
+}
+.markdown-body blockquote{
+margin-top:1em!important;
+margin-bottom:1em!important;
+}
+.markdown-body img{
+margin-bottom:1em!important;
+}
+.markdown-body pre{
+  word-wrap: break-word;
+  padding:1em;  
+}
+.markdown-body pre code{
+  line-height: 1.75em;
+}
+
 @media screen and (min-width: 914px) {
   .markdown-body body {
     width: 854px;

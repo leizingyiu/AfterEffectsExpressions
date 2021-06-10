@@ -107,6 +107,43 @@ body {
   display: block;
 }
 
+#main #content div.markdown-body pre {
+  pointer-events: none;
+  position: relative;
+}
+
+#main #content div.markdown-body pre::after {
+  pointer-events: auto;
+  cursor:pointer;
+  content: 'COPY';
+  display: block;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  border: 1px solid #aaa;
+  padding: 0.2em 0.4em;
+  border-radius: 0.2em;
+  letter-spacing: 0.1em;
+  transition: transform 0.2s , box-shadow 0.2s !important;
+
+  opacity: 0.2;
+}
+#main #content div.markdown-body pre:hover::after {
+  transform: translate(0,-4px);
+  border: 1px solid #999;
+  box-shadow: 0 4px 0px #999 ,0 4px 8px #aaa;
+  transition: transform 0.1s , box-shadow 0.1s !important;
+  opacity: 1;
+}
+#main #content div.markdown-body pre:active::after {
+  color: #178fe6;
+  background-color: #fff;
+  transform: translate(0,-2px);
+  border: 1px solid #999;
+  box-shadow: 0 2px 0px #999 ,0 4px 8px #aaa;
+  transition: transform 0.1s , box-shadow 0.1s !important;
+  opacity: 1;
+}
 
 #main #expression {
   display: flex;
