@@ -18,7 +18,7 @@ function getSearchJson() {
     return param;
 };
 var search = getSearchJson();
-var hostAndPath = 'https://cdn.jsdelivr.net/gh/leizingyiu/leizingyiu.github.io/';// String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
+var hostAndPath = 'https://cdn.jsdelivr.net/gh/leizingyiu/AfterEffectsExpressions/';// String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
 
 /* 获取网址关于语言的参数 */
 function getLangSuffixFromSearch() {
