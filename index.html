@@ -15,19 +15,21 @@
         <li id="catalog">
             <h1 id='title'
                 onclick="window.location='..'+ String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');"></h1>
-            <dl id="contents">
-                <dt>contents</dt>
-                <dd class="cn">
-                    <ul class="cn">
-                        <li><a href="javascript:void 0">AE路径弹性表达式</a></li>
-                        <li><a href="javascript:void 0">三角波与锯齿波</a></li>
-                    </ul>
-                    <ul class="en">
-                        <li><a href="javascript:void 0">a</a></li>
-                    </ul>
-                </dd>
-            </dl>
-            <!-- <dl id="expressions">
+            <ul>
+                <li id="websiteCatalog">
+                    <dl id="contents">
+                        <dt>contents</dt>
+                        <dd class="cn">
+                            <ul class="cn">
+                                <li><a href="javascript:void 0">AE路径弹性表达式</a></li>
+                                <li><a href="javascript:void 0">三角波与锯齿波</a></li>
+                            </ul>
+                            <ul class="en">
+                                <li><a href="javascript:void 0">a</a></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <!-- <dl id="expressions">
                 <dt>expressions</dt>
                 <dd>
                     <ul>
@@ -39,15 +41,18 @@
                     </ul>
                 </dd>
             </dl> -->
-            <dl id='FAQ'>
-                <dt>FAQ</dt>
-                <dd>
-                    <ul>
-                        <li><a href="javascript:void 0">如何粘贴表达式</a></li>
-                        <li><a href="javascript:void 0">如何使用ffx</a></li>
-                    </ul>
-                </dd>
-            </dl>
+                    <dl id='FAQ'>
+                        <dt>FAQ</dt>
+                        <dd>
+                            <ul>
+                                <li><a href="javascript:void 0">如何粘贴表达式</a></li>
+                                <li><a href="javascript:void 0">如何使用ffx</a></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </li>
+                <li id="articleCatalog"></li>
+            </ul>
         </li>
         <li id="content">
             <section>
@@ -74,6 +79,7 @@
         document.querySelector('body').appendChild(script);
     </script>
 
+    <!-- 打字动画 -->
     <script>
         function typing(selector) {
             let dom = document.querySelector(selector);
@@ -96,6 +102,10 @@
             document.querySelector('#content').onmouseover = function () { };
         };
     </script>
+
+    <ol id=‘topNav’>
+        <li><a href=""></a></li>
+    </ol>
 </body>
 
 </html>

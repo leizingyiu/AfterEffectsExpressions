@@ -18,7 +18,7 @@ function getSearchJson() {
     return param;
 };
 var search = getSearchJson();
-var pathname = String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
+var hostAndPath = 'https://cdn.jsdelivr.net/gh/leizingyiu/leizingyiu.github.io/';// String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
 
 /* 获取网址关于语言的参数 */
 function getLangSuffixFromSearch() {
@@ -228,7 +228,7 @@ function imgSrcToOnline(content) {
     // let b = content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, '$1'); console.log(b);
     // let c = content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, location.protocol + "//" + location.hostname + location.pathname); console.log(c);
 
-    return location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content : content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, location.protocol + "//" + location.hostname + location.pathname);
+    return location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content : content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, hostAndPath /*location.protocol + "//" + location.hostname + location.pathname*/);
 }
 
 function imgSrcToDataSrc(content) {
@@ -299,17 +299,17 @@ function writeTitleAndExpressions(content) {
                     if (parameter['expressions'][js][key] instanceof Array) {
                         parameter['expressions'][js][key].map(v => (function () {
                             let text = key + ' ' + v.match(/(?<=\.).*/);
-                            let target = '..' + pathname + '/' + key + '/' + v;
+                            let target = hostAndPath + '/' + key + '/' + v;
                             buttonFn(text, target);
                         })())
                     } else {
                         let text = key + ' ' + parameter['expressions'][js][key].match(/(?<=\.).*/);
-                        let target = '..' + pathname + '/' + key + '/' + parameter['expressions'][js][key];
+                        let target = hostAndPath + '/' + key + '/' + parameter['expressions'][js][key];
                         buttonFn(text, target);
                     }
                 })())
 
-                let expressionUrl = '..' + pathname + '/expressions/' + js;
+                let expressionUrl = hostAndPath + '/expressions/' + js;
                 console.log(expressionUrl);
 
                 let script = '';
@@ -380,8 +380,7 @@ function replaceMarkedHTML() {
 
 
 function typingH1WhenHomePage(content) {
-    console.log(pathname == '');
-    content = pathname == '' ? content + `
+    content = content + `
     < script >
     function typing(selector) {
         let dom = document.querySelector(selector);
@@ -408,7 +407,7 @@ function typingH1WhenHomePage(content) {
     };
     typing('.markdown-body h1')
     < /script >
-    ` : content;
+    `;
     console.log(content);
     return content;
 }
