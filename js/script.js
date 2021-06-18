@@ -1,4 +1,4 @@
-let debuging = false;
+let debuging = true;
 console.log = debuging ? console.log : (() => void 0);
 
 /** 页面标题设置 */
@@ -18,7 +18,8 @@ function getSearchJson() {
     return param;
 };
 var search = getSearchJson();
-var hostAndPath = 'https://cdn.jsdelivr.net/gh/leizingyiu/AfterEffectsExpressions/';// String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
+var hostAndPath = location.host.match(/[a-zA-Z]/g) ? 'https://cdn.jsdelivr.net/gh/leizingyiu/AfterEffectsExpressions/' : '..' + String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
+console.log(hostAndPath);
 
 /* 获取网址关于语言的参数 */
 function getLangSuffixFromSearch() {
@@ -35,8 +36,8 @@ function getLangSuffixFromSearch() {
 function sendGETRequest(url, urlReplaceObj, type, callback) {
     let xhr = new XMLHttpRequest();
 
-    console.log(urlReplaceObj);
-    console.log((JSON.stringify(urlReplaceObj) != "{}") && urlReplaceObj != undefined);
+    // console.log(urlReplaceObj);
+    // console.log((JSON.stringify(urlReplaceObj) != "{}") && urlReplaceObj != undefined);
 
     if (JSON.stringify(urlReplaceObj) != "{}" && urlReplaceObj != undefined) {
         let urlReplaceObjKey = Object.keys(urlReplaceObj);
@@ -58,24 +59,24 @@ function sendGETRequest(url, urlReplaceObj, type, callback) {
 };
 
 /* 读取到请求返回后写页面 */
-var writeMarkDown = function (cssSelector, fn) {
+var writeMarkDown = function (cssSelector, fn, callback) {
     return function () {
         var content = arguments[arguments.length - 1]['response'];
         var status = arguments[arguments.length - 1]['status'];
-        //if (status == 200) {
-        document.querySelector(cssSelector).innerHTML = fn(marked(content));
-        //} else {
-        //document.querySelector(cssSelector).innerText = '\n(´ﾟдﾟ`)\n 这个页面还没做，快了快了\n (๑•́ ₃ •̀๑)';
-        //}
+        var filename = decodeURIComponent(arguments[arguments.length - 1]['responseURL']).match(/(?<=\/)[^\/]+$/g);
+        document.querySelector(cssSelector).innerHTML = "<title>" + filename + "</title>" + fn(marked(content));
+        if ("undefined" != typeof callback) {
+            callback();
+        }
     }
 };
 
-var writeHtml = function (cssSelector) {
+var writeHtml = function (cssSelector, fn) {
     return function () {
         var content = arguments[arguments.length - 1]['response'];
         var status = arguments[arguments.length - 1]['status'];
         if (status == 200) {
-            document.querySelector(cssSelector).innerHTML = (content);
+            document.querySelector(cssSelector).innerHTML = fn(content);
         } else {
             document.querySelector(cssSelector).innerText = ' (´ﾟдﾟ`) 这个页面还没做，快了快了 (๑•́ ₃ •̀๑)';
         }
@@ -228,7 +229,8 @@ function imgSrcToOnline(content) {
     // let b = content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, '$1'); console.log(b);
     // let c = content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, location.protocol + "//" + location.hostname + location.pathname); console.log(c);
 
-    return location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content : content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, hostAndPath /*location.protocol + "//" + location.hostname + location.pathname*/);
+    return location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content : content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, hostAndPath);
+    /*location.protocol + "//" + location.hostname + location.pathname*/
 }
 
 function imgSrcToDataSrc(content) {
@@ -240,6 +242,7 @@ function imgZoonToWidth(content) {
 }
 
 /* 从content 获取 expressionn  并写入 */
+
 var contentHeaderDom = document.querySelector('#content section');
 var titleDom = document.querySelector('#content h1');
 var descriptionDom = document.querySelector('#content p');
@@ -271,6 +274,7 @@ function writeTitleAndExpressions(content) {
 
 
         expressionsDom.innerHTML = '';
+        expressionsDom.style.display = 'flex';
         if (parameter.hasOwnProperty('expressions')) {
             Object.keys(parameter['expressions']).map(js => (function () {
 
@@ -325,7 +329,7 @@ function writeTitleAndExpressions(content) {
                     div.appendChild(pre);
 
                     copyButton.onclick = function () {
-                        copyStr(script)
+                        copyOrNotWithUrl(script)
                     };
                     div.appendChild(copyButton);
 
@@ -358,15 +362,94 @@ function solveError(content) {
     }
     return content;
 }
-
 function refreshMathJax(content) {
     let before = '<img src="http://latex.codecogs.com/gif.latex?';
     let after = '"/>';
-    //console.log(content);
     return content.replace(/\$\$([\s\S]*?)\$\$/g, '<br>' + before + '$1' + after + '<br>');
 }
+function preCopyButton(content) {
+    content = content.replace(/<pre>/g, '<pre onclick="copyOrNotWithUrl(this.innerText)">');
+    return content;
+}
 
-function replaceMarkedHTML() {
+function pageCatalogAnchorAddingAfterTagNames() {
+    let selectorReg = RegExp('(' + [...arguments].map(arg => '(<' + arg + ' )').join('|') + ')([^<]*)(</)?', 'g');
+    let argUpper = arguments;
+    console.log(arguments.length);
+    console.log(selectorReg);
+    return function (content) {
+        let args = [...argUpper];
+        let catalogAttrName = 'data-catalog-id';
+        if (content.match(selectorReg)) {
+            content.match(selectorReg).map(function (d, idx) {
+                content = content.replace(d, d.replace(selectorReg, '$1' + ' ' + catalogAttrName + '="' + idx + '" ' + args.map(function (a, idx) {
+                    let n = 5;
+                    let i = 1 + idx * n;
+                    args[0] = (idx == 0) ? '$' + i : args[0] + '$' + i;
+                    for (let j = 0; j < n; j++) {
+                        i += 1;
+                        args[0] += '$' + i;
+                    }
+                    return args[0];
+                })[0]));
+            });
+        }
+        return content;
+    }
+}
+function generateArticleCatalog(articleSelector = '#content .markdown-body', catalogBookmarkSelector = '[data-catalog-id]', catalogDom = '#articleCatalog') {
+    var catalogList = document.querySelectorAll(catalogBookmarkSelector);
+    console.log(catalogList);
+    var catalogDomList = [];
+    document.querySelector(catalogDom).innerHTML = '';
+
+    if (catalogList.length != 0) {
+        [...catalogList].map(function (dom) {
+            var level = dom.localName.match(/\d/);
+            var idx = dom.getAttribute('data-catalog-id');
+            var d = document.createElement('a');
+            d.href = 'javascript:void 0;';
+            d.onclick = function () {
+                dom.scrollIntoView();
+                document.body.scrollIntoView();
+            };
+            d.innerHTML = dom.innerHTML;
+            d.innerHTML = d.innerText.length > 10 ? d.innerHTML.replace(/([，。～]+)/g, '$1</br>') : d.innerHTML;
+            d.innerHTML = d.innerHTML.replace(/(<\/*br>)+/g, '</br>')
+            d.style.display = 'block';
+            d.style.marginLeft = (level - 1) + "em";
+            d.style.fontSize = (10 - level + 1) / 10 + "em";
+            catalogDomList[idx] = d;
+        })
+        console.log(catalogDomList);
+
+        var dl = document.createElement('dl');
+        var dt = document.createElement('dt');
+        var dd = document.createElement('dd');
+        var ul = document.createElement('ul');
+        var li = [];
+        dl.id = "article catalog";
+        console.log(document.querySelector(articleSelector + ' title').innerText);
+        dl.setAttribute('alt', document.querySelector(articleSelector + ' title') ? document.querySelector(articleSelector + ' title').innerText : '文章目录');
+        console.log(dl.alt);
+        dt.innerText = dl.id;
+        document.querySelector(catalogDom).appendChild(dl);
+        dl.appendChild(dt);
+        dl.appendChild(dd);
+        dd.appendChild(ul);
+        catalogDomList.map(function (dom, idx) {
+            li[idx] = document.createElement('li');
+            ul.appendChild(li[idx]);
+            li[idx].appendChild(dom);
+        });
+    }
+}
+function scrollContentTop(content) {
+    document.querySelector('.markdown-body').scrollTop = 0;
+    return content;
+}
+
+function returnFnFromArgs() {
     var arg = arguments;
     return function (content) {
         for (let i = 0; i < arg.length; i++) {
@@ -375,54 +458,60 @@ function replaceMarkedHTML() {
         return content;
     }
 }
+function runFns() {
+    var arg = [...arguments];
+    return function () {
+        arg.map(fn => fn());
+    }
+}
+
+var writingContentFn = returnFnFromArgs(
+    imgSrcToLocal,
+    imgSrcToOnline,
+    imgSrcToDataSrc,
+    imgZoonToWidth,
+    writeTitleAndExpressions,
+    refreshMathJax,
+    preCopyButton,
+    solveError,
+    resetMain,
+    scrollContentTop,
+
+    pageCatalogAnchorAddingAfterTagNames('h1', 'h2', 'h3'),
+);
+var writingContentCallback = runFns(
+    generateArticleCatalog,
+    catalogInteraction
+
+);
+
+/* 读取md内容，对md内容修改再写入⬆️ */
 
 
 
+/**写入md后，对页面的修改⬆️  writeMarkDown的callback*/
 
-function typingH1WhenHomePage(content) {
-    content = content + `
-    < script >
-    function typing(selector) {
-        let dom = document.querySelector(selector);
-        if ('undefined' == typeof i) {
-            i = 0;
-        }
-        if ('undefined' == typeof timer) {
-            timer = 0;
-        }
-        if ('undefined' == typeof str) {
-            str = dom.innerText.replace(/\n/g, '➾');
-        }
-        if (i <= str.length) {
-            dom.innerHTML = str.slice(0, i++).replace(/➾/g, '<br>') + '_';
-            let ranTime = Math.random() * 100;
-            var nextTyping = function() {
-                    typing(selector)
-                };
-            timer = setTimeout(nextTyping, ranTime)
-        } else {
-            dom.innerHTML = str.replace(/➾/g, '<br>');
-            clearTimeout(timer)
-        }
-    };
-    typing('.markdown-body h1')
-    < /script >
-    `;
-    console.log(content);
+
+function expressionMain(content) {
+    document.getElementById('main').className = 'expression';
+    return content;
+}
+function resetMain(content) {
+    document.getElementById('main').removeAttribute('class');
     return content;
 }
 
-function preCopyButton(content) {
-    //console.log(content);
-    content = content.replace(/<pre>/g, '<pre onclick="copyStr(this.innerText)">');
-    //console.log(content);
-    return content;
+function writeInPre(content) {
+    return '<pre>' + content + '</pre>';
 }
-var htmlReplacement = replaceMarkedHTML(imgSrcToLocal, imgSrcToOnline, imgSrcToDataSrc, imgZoonToWidth, writeTitleAndExpressions, refreshMathJax, preCopyButton, solveError);
-/* 读取md内容，对md内容修改再写入 */
+var writingExpressionCallback = returnFnFromArgs(
+    writeInPre,
+    expressionMain,
+    preCopyButton
+)
+/**读取非md内容，对非md内容修改再写入⬆️ */
 
-
-/* 文章选择 */
+/* 文章选择 & /* catalog ul dt onclick */
 /*var contents = document.getElementById('contents');
 [...contents.querySelectorAll('li a')].map(i => i.onclick = function () {
     let langSuffix = getLangSuffixFromSearch();
@@ -433,48 +522,131 @@ var htmlReplacement = replaceMarkedHTML(imgSrcToLocal, imgSrcToOnline, imgSrcToD
     //document.querySelector('#main').className = 'detail';
 });*/
 
+function catalogInteraction() {
+    var catalog = document.getElementById('catalog');
+    [...catalog.querySelectorAll('dl')].map(dl => (function () {
+        let dt = dl.querySelector('dt');
+        let dd = dl.querySelector('dd');
 
-var catalog = document.getElementById('catalog');
-[...catalog.querySelectorAll('dl')].map(dl => (function () {
-    dl.querySelector('dt').innerText = dl.id;
-    [...dl.querySelectorAll('li a')].map(i => i.onclick = function () {
-        let langSuffix = getLangSuffixFromSearch();
-        window.history.replaceState({}, null, '?' + dl.id + '=' + i.innerText + (langSuffix != '' ? '&lang=' +
-            langSuffix : ''));
-        sendGETRequest('./' + dl.id + '/' + i.innerText + '.md', {}, 'text', writeMarkDown('#content div', htmlReplacement));
+        dt.innerText = dt.parentElement.id.replace(/([A-Z])/g, ' $1');
 
-        //document.querySelector('#main').className = 'detail';
-    })
-})())
+        /**鼠标hover时，折叠其他 */
+        dl.onmouseover = function catalogDlOnMouseOver() {
+            let dt = this.querySelector('dt');
+            let dd = this.querySelector('dd');
 
-/**页面加载时如果url存在参数，读取参数指向的内容， */
-Object.keys(search).map(key => (function () {
-    Object.keys(search).map(key => (function () {
-        if (document.querySelector('#' + key)) {
-            sendGETRequest('./' + key + '/' + search[key] + '.md', {}, 'text', writeMarkDown('#content div', htmlReplacement));
-        }
-    })());
-})());
 
-if (Object.keys(search).length == 0) {
-    sendGETRequest('./contents/index.md', {}, 'text', writeMarkDown('#content div', htmlReplacement));
 
+            // let p = this.parentElement;
+            // [...p.children].map(function (j) {
+            //     j.className = 'fold';
+            //     j.querySelector('dd').style.maxHeight = '0!importannt';
+            //     j.onmouseover = catalogDlOnMouseOver;
+            // });
+            // this.removeAttribute('class');
+
+
+            [...document.getElementById('catalog').querySelectorAll('dl')].map(function (j) {
+                j.className = 'fold';
+                j.querySelector('dd').style.maxHeight = '0!importannt';
+                j.onmouseover = catalogDlOnMouseOver;
+            });
+            this.removeAttribute('class');
+
+
+
+            dd.setAttribute('data-height', dd.scrollHeight);
+        };
+        /**鼠标hover时，折叠其他 */
+
+        /**dt 三角形 点击 */
+        dt.onclick = function () {
+            dt.parentElement.className = dt.parentElement.className == '' ? 'fold' : '';
+            dl.onmouseover = dl.onmouseover == '' ? catalogDlOnMouseOver : '';
+        };
+
+
+        [...dl.querySelectorAll('li a')].map(i => i.onclick = function () {
+            /**鼠标hover时，折叠其他 */
+            // let p = i.parentElement;
+            // while (p.id != dl.id) { p = p.parentElement; }
+            // [...p.parentElement.children].map(function (j) { j.className = 'fold'; });
+            // p.removeAttribute('class');
+            /**鼠标hover时，折叠其他 */
+
+            let langSuffix = getLangSuffixFromSearch();
+            window.history.replaceState({}, null, '?' + dl.id + '=' + i.innerText + (langSuffix != '' ? '&lang=' +
+                langSuffix : ''));
+            if (i.getAttribute('data-file-type') == 'md') {
+                console.log('click md');
+                sendGETRequest('./' + dl.id + '/' + i.innerText + (i.getAttribute('data-file-type') ? '.' + i.getAttribute('data-file-type') : ''), {}, 'text', writeMarkDown('#content div', writingContentFn, writingContentCallback));
+            } else if (i.getAttribute('data-file-type') != 'md' || i.innerText.indexOf('.js' != -1)) {
+                console.log('click not md');
+                sendGETRequest('./' + dl.id + '/' + i.innerText + (i.getAttribute('data-file-type') ? '.' + i.getAttribute('data-file-type') : ''), {}, 'text', writeHtml('#content div', writingExpressionCallback));
+            }
+            //document.querySelector('#main').className = 'detail';
+        });
+        [...dl.querySelectorAll('li a')].map(function (a) {
+            a.href = 'javascript:void 0';
+        })
+    })())
 }
 
-/* catalog ul dt onclick */
-var catalogDt = document.querySelectorAll('#catalog dt');
-[...catalogDt].map(i => i.onclick = function () {
-    console.log(this);
-    i.parentElement.className = i.parentElement.className == '' ? 'fold' : '';
-})
+/**页面加载时如果url存在参数，读取参数指向的内容， */
+
+console.log(1);
+
+
+
+
+
+
+
+
+/**TODO */
+
+if (Object.keys(search).length != 0 && Object.keys(search).map(function (key) {
+    return [...document.querySelectorAll('#catalog dl')].map(function (dl) {
+        return dl.id == key && [...dl.querySelectorAll('li')].map(function (li) {
+            return li.innerText == search[key];
+        }).filter(Boolean).length != 0;
+    })
+}).filter(Boolean).length == 0) {
+    console.log(2);
+    window.location = '../' + window.location.pathname;
+}
+
+if (Object.keys(search).length == 0) {
+    console.log(3);
+
+    sendGETRequest('index.md', {}, 'text', writeMarkDown('#content div', writingContentFn, writingContentCallback));
+}
+
+Object.keys(search).map(key => (function () {
+
+    console.log("document.querySelector('#' + key)  " + document.querySelector('#' + key));
+    console.log("search[key].indexOf('.') == -1)   " + search[key].indexOf('.') == -1);
+    console.log(search[key]);
+    console.log("search[key].indexOf('.'))   " + search[key].indexOf('.'));
+
+    if (document.querySelector('#' + key) && search[key].indexOf('.') == -1) {
+        sendGETRequest('./' + key + '/' + search[key] + '.md', {}, 'text', writeMarkDown('#content div', writingContentFn, writingContentCallback));
+    } else if (document.querySelector('#' + key)) {
+        console.log('not md loading');
+
+        sendGETRequest('./' + key + '/' + search[key], {}, 'text', writeHtml('#content div', writingExpressionCallback));
+    }
+})());
+
+/**TODO */
 
 
 
 
 /* 复制函数 */
-function copyStr(str) {
+function copyOrNotWithUrl(str) {
     let a = document.createElement("textarea");
-    a.value = str;
+    a.value = str + '\n/* 来源：' + decodeURIComponent(location.href) + ' */';
     document.body.appendChild(a);
     a.select();
     let maxLength = 300;

@@ -32,25 +32,19 @@ body {
 #main #catalog {
   flex: 1 0 auto;
   overflow: scroll;
-  min-width: 144px;
+  min-width: 150px;
   line-height: 1.5em;
 }
-#main #catalog dd.cn .cn,#main #catalog dd.en .en{
+
+#main #catalog dd.cn .cn,
+#main #catalog dd.en .en {
   display: auto;
 }
-#main #catalog dd.en .cn,#main #catalog dd.cn .en{
+
+#main #catalog dd.en .cn,
+#main #catalog dd.cn .en {
   display: none;
 }
-
-
-
-
-/* #main #catalog,#main #content{
-  padding: 1rem;
-}
-#main #expression pre{
-  padding: 1rem;
-} */
 
 #main #content,
 #main #expression {
@@ -60,17 +54,54 @@ body {
 
 #main #catalog #title {
   font-size: 1.25rem;
-  line-height: 1.25em;
+  line-height: 1.75em;
+  letter-spacing: 0.05em;
+  font-weight: 400;
   cursor: pointer;
+}
+#main #catalog dl{
+  margin-top: 1rem;
+}
+#main #catalog dl:before {
+  content: attr(alt);
+  font-size: 0.5rem;
+  line-height: 1.5em;
+  height: 0.5rem;
+  position: relative;
+  width: 100%;
+  top: 0;
+  opacity: 0.5;
+  letter-spacing: 0.05em;
+  white-space: pre;
+  transition: all 0.2s ease !important;
+}
+#main #catalog dl.fold:before {
+  content: attr(alt);
+  height: 0;
+  line-height: 0em;
+  letter-spacing: -1em;
+  position: relative;
+  width: 100%;
+  top: 1rem;
+  opacity: 0;
+  transition: line-height 0.2s ease;
 }
 
 #main #catalog dt {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
+  text-transform: capitalize;
+  margin-top: 0.25rem;
   padding-bottom: 0.5rem;
-  position: relative;
-  cursor: pointer;
+  padding-right: 1em;
+  /* position: relative; */
+  cursor: n-resize;
+  position: sticky;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.9);
 }
-
+#main #catalog dl.fold dt{
+  cursor:s-resize;
+}
 #main #catalog dt::before {
   content: ' ';
   display: block;
@@ -81,18 +112,75 @@ body {
   border-right: 1px solid #666;
   right: 0;
   top: 30%;
-  transform: rotate(45deg) ;
-  transition:transform 0.2s!important;
+  transform: rotate(45deg);
+  transition: transform 0.2s !important;
+}
+
+#main #catalog dl dd {
+  max-height: 100vh;
+  /* height: attr(data-height); */
+  opacity: 1;
+  transition: all 0.5s ease-in-out !important;
+}
+
+
+#main #catalog dl.fold dt {
+  opacity: 0.5;
 }
 
 #main #catalog dl.fold dd {
+  max-height: 0;
   height: 0;
+  opacity: 0;
   overflow: hidden;
+  transition: all 0.5s ease-in-out !important;
+
 }
+
+#main #catalog dl dd::-webkit-scrollbar {
+  width: 0;
+}
+
 
 #main #catalog dl.fold dt::before {
   transform: rotate(135deg);
-  transition:transform 0.2s!important;
+  transition: transform 0.2s !important;
+}
+
+#main #catalog dl li {
+  font-size: 0.9rem;
+  padding: 0.1em;
+}
+
+#main #catalog dl li a {
+  color: rgb(33 117 224);
+}
+
+#main #catalog dl li a:hover {
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+#main #content section{
+  display: block;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#main #content section::after {
+  content: ' ';
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 1.5em;
+  bottom: 0;
+  left: 50%;
+  background-image: linear-gradient(white,  rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0),rgba(255, 255, 255, 0))   , linear-gradient(white, rgba(0,0,0,0.08), rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.005), rgba(0, 0, 0, 0));
+  position: absolute;
+  /* background: black; */
+  transform: translate(-50%,1.4em);
+  transition: none!important;
 }
 
 #main #content div.markdown-body {
@@ -100,7 +188,25 @@ body {
   overflow: scroll;
 }
 
-#main #content div.markdown-body::after{
+/* #main #content div.markdown-body::before {
+  content: ' ';
+  display: block;
+  width: 112%;
+  margin: 0;
+  padding: 0;
+  height: 0.8em;
+  top: -1.1em;
+  left: 0;
+  background-image: linear-gradient(white, white, rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0));
+  position: sticky;
+} */
+
+#main #content div.markdown-body::after {
   content: '';
   width: 100%;
   height: 10vh;
@@ -110,40 +216,50 @@ body {
 #main #content div.markdown-body pre {
   pointer-events: none;
   position: relative;
+  white-space: pre-wrap;
 }
 
 #main #content div.markdown-body pre::after {
   pointer-events: auto;
-  cursor:pointer;
+  cursor: pointer;
   content: 'COPY';
   display: block;
   position: absolute;
   right: 5px;
-  top: 5px;
+  bottom: 5px;
   border: 1px solid #aaa;
   padding: 0.2em 0.4em;
   border-radius: 0.2em;
   letter-spacing: 0.1em;
-  transition: transform 0.2s , box-shadow 0.2s !important;
+  transition: transform 0.2s, box-shadow 0.2s !important;
 
   opacity: 0.2;
 }
+
 #main #content div.markdown-body pre:hover::after {
-  transform: translate(0,-4px);
+  transform: translate(0, -4px);
   border: 1px solid #999;
-  box-shadow: 0 4px 0px #999 ,0 4px 8px #aaa;
-  transition: transform 0.1s , box-shadow 0.1s !important;
+  box-shadow: 0 4px 0px #999, 0 4px 8px #aaa;
+  transition: transform 0.1s, box-shadow 0.1s !important;
   opacity: 1;
 }
+
 #main #content div.markdown-body pre:active::after {
   color: #178fe6;
   background-color: #fff;
-  transform: translate(0,-2px);
+  transform: translate(0, -2px);
   border: 1px solid #999;
-  box-shadow: 0 2px 0px #999 ,0 4px 8px #aaa;
-  transition: transform 0.1s , box-shadow 0.1s !important;
+  box-shadow: 0 2px 0px #999, 0 4px 8px #aaa;
+  transition: transform 0.1s, box-shadow 0.1s !important;
   opacity: 1;
 }
+
+#main #content div.markdown-body .shadow {
+  box-shadow: 0 8px 24px rgb(106 121 127 / 48%);
+  border-radius: 0.2em;
+  overflow: hidden;
+}
+
 
 #main #expression {
   display: flex;
@@ -201,14 +317,28 @@ opacity: 0.05;
   overflow: hidden;
   position: relative;
   padding: 0 !important;
-  border-bottom: 2px solid #eee!important;
-  
- 
+  border-bottom: 2px solid #eee !important;
+
+
 }
-#main #expression div:last-of-type{
+
+#main #expression div:last-of-type {
   border: none;
 }
 
+#main #expression:hover div:hover {
+  opacity: 1;
+}
+
+#main #expression:hover div::before {
+  opacity: 0.6;
+  ;
+}
+
+#main #expression:hover div:hover::before {
+  opacity: 0.2;
+  ;
+}
 
 #main #expression div:before {
   content: attr(title);
@@ -221,6 +351,7 @@ opacity: 0.05;
   letter-spacing: 0.1em;
   font-weight: 100;
   transition: 0.33s !important;
+  opacity: 1;
 }
 
 #main #expression div pre {
@@ -235,6 +366,7 @@ opacity: 0.05;
 #main #expression div:hover button {
   opacity: 1;
 }
+
 #main #expression div:hover::before {
   opacity: 0.05;
   letter-spacing: 2em;
@@ -245,7 +377,7 @@ opacity: 0.05;
 #main #expression div button {
   font-size: 0.8rem;
   letter-spacing: 0.1em;
-  text-transform:uppercase;
+  text-transform: uppercase;
   padding: 0.5em 1em;
   border-radius: 0.25em;
   cursor: pointer;
@@ -259,12 +391,13 @@ opacity: 0.05;
   position: absolute;
   box-shadow: 0 2px 0 #808080, 0 2px 4px rgb(17 109 152 / 24%);
   border: 2px solid #808080;
-  background: rgba(255,255,255, 0.6);
+  background: rgba(255, 255, 255, 0.6);
 }
+
 /* __ */
 
 #main #expression div:hover button {
-  transform: translate(0px,0px);
+  transform: translate(0px, 0px);
   padding: 0.5em 1em;
   font-size: 0.8rem;
   border-radius: 4px;
@@ -274,8 +407,9 @@ opacity: 0.05;
 #main #expression div:hover button {
   box-shadow: 0 4px 0 #6478ea, 0 4px 6px rgb(17 109 152 / 32%);
   border: 2px solid #6478ea;
-  background: rgba(255,255,255,0.9) ;
+  background: rgba(255, 255, 255, 0.9);
 }
+
 /* __ */
 
 #main #expression div:hover button:hover {
@@ -285,6 +419,7 @@ opacity: 0.05;
 #main #expression div:hover button:hover {
   box-shadow: 0 2px 0 #6478ea, 0 2px 4px rgb(17 109 152 / 24%);
 }
+
 /* __ */
 
 #main #expression div:hover button:active {
@@ -295,24 +430,28 @@ opacity: 0.05;
   box-shadow: 0 0px 0 #475edf, 0 0px 6px rgb(71 196 255 / 80%);
   border: 2px solid #475edf;
 }
+
 /* __ */
 #main #expression div button.copy {
   position: absolute;
-  right: 1rem!important;
-  left: inherit!important;
+  right: 1rem !important;
+  left: inherit !important;
   bottom: 1rem;
   box-shadow: 0 2px 0 #808080, 0 2px 4px rgb(17 109 152 / 24%);
   border: 2px solid #808080;
-  background: rgba(255,255,255, 0.6);
+  background: rgba(255, 255, 255, 0.6);
 }
+
 #main #expression div:hover button.copy {
   box-shadow: 0 4px 0 #178fe6, 0 4px 6px rgb(17 109 152 / 32%);
   border: 2px solid #178fe6;
-  background: rgba(255,255,255,0.9) ;
+  background: rgba(255, 255, 255, 0.9);
 }
+
 #main #expression div:hover button.copy:hover {
   box-shadow: 0 2px 0 #178fe6, 0 2px 4px rgb(17 109 152 / 24%);
 }
+
 #main #expression div:hover button.copy:active {
   box-shadow: 0 0px 0 #0c8deb, 0 0px 6px rgb(71 196 255 / 80%);
   border: 2px solid #0c8deb;
@@ -321,44 +460,62 @@ opacity: 0.05;
 /** */
 
 
-#main #expression:hover div:hover{
-opacity: 1;
-}
-#main #expression:hover div::before{
-  opacity: 0.2;
-;}
+
 
 /* ———————————— exprossions before title*/
 
 
-div#zoomingImg{ 
-  width:100%;
-  height:100%;
-  position:fixed;
-  top:0;
-  left:0;
-  background:rgba(0,0,0,0.8);
-  cursor:zoom-out;
-  }
-div#zoomingImg::after {
-    content: attr(alt);
-    position: absolute;
-    bottom: 1em;
-    color: #fff;
-    letter-spacing: 0.2em;
-    width: 100%;
-    text-align: center;
-}
-div#zoomingImg img{
-  max-width:90vw;
-  max-height:90vh;
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
-  cursor:zoom-out;
+div#zoomingImg {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  cursor: zoom-out;
 }
 
+div#zoomingImg::after {
+  content: attr(alt);
+  position: absolute;
+  bottom: 1em;
+  color: #fff;
+  letter-spacing: 0.2em;
+  width: 100%;
+  text-align: center;
+}
+
+div#zoomingImg img {
+  max-width: 90vw;
+  max-height: 90vh;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: zoom-out;
+}
+
+
+#main.expression #content section,
+#main.expression #expression {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: none !important;
+}
+
+#main.expression #content {
+  flex: 5 0 auto;
+  max-width: 80vw;
+}
+
+#main.expression #content pre {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
 
 /* 滚动条 */
 ::-webkit-scrollbar {

@@ -17,36 +17,41 @@
                 onclick="window.location='..'+ String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');"></h1>
             <ul>
                 <li id="websiteCatalog">
-                    <dl id="contents">
-                        <dt>contents</dt>
+                    <dl id="orginalExpressions" alt='我熬夜写的 ＿ﾉ乙(､ﾝ､)＿ '>
+                        <dt></dt>
                         <dd class="cn">
                             <ul class="cn">
-                                <li><a href="javascript:void 0">AE路径弹性表达式</a></li>
-                                <li><a href="javascript:void 0">三角波与锯齿波</a></li>
+                                <li><a data-file-type='md'>AE路径弹性表达式</a></li>
+                                <li><a data-file-type='md'>三角波与锯齿波</a></li>
                             </ul>
                             <ul class="en">
-                                <li><a href="javascript:void 0">a</a></li>
+                                <li><a>a</a></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    <dl id="collectFromTheInternet" alt="一样买菜，我煮得更好吃 ε٩(๑> ₃ <)۶з">
+                        <dt></dt>
+                        <dd>
+                            <ul>
+                                <li><a data-file-type="md">万能弹性表达式</a></li>
                             </ul>
                         </dd>
                     </dl>
                     <!-- <dl id="expressions">
-                <dt>expressions</dt>
-                <dd>
-                    <ul>
-                        <li><a href="javascript:void 0">a</a></li>
-                        <li><a href="javascript:void 0">b</a></li>
-                        <li><a href="javascript:void 0">c</a></li>
-                        <li><a href="javascript:void 0">d</a></li>
-                        <li><a href="javascript:void 0">e</a></li>
-                    </ul>
-                </dd>
-            </dl> -->
-                    <dl id='FAQ'>
-                        <dt>FAQ</dt>
+                        <dt></dt>
                         <dd>
                             <ul>
-                                <li><a href="javascript:void 0">如何粘贴表达式</a></li>
-                                <li><a href="javascript:void 0">如何使用ffx</a></li>
+                                <li><a>sawWave().js</a></li>
+                                <li><a>triWave().js</a></li>
+                            </ul>
+                        </dd>
+                    </dl> -->
+                    <dl id='FAQ' alt="常见问题，很常见的问题 (ㆆᴗㆆ)">
+                        <dt></dt>
+                        <dd>
+                            <ul>
+                                <li><a data-file-type='md'>如何粘贴表达式</a></li>
+                                <li><a data-file-type='md'>如何使用ffx</a></li>
                             </ul>
                         </dd>
                     </dl>
@@ -72,8 +77,12 @@
         /*判断是否本地*/
         var script = document.createElement('script');
         if (location.host.match(/[a-zA-Z]/g)) {
-            script.src = 'https://leizingyiu.github.io/AfterEffectsExpressions/js/script.js';
+
+            console.log('script.js from online');
+            //            script.src = 'https://leizingyiu.github.io/AfterEffectsExpressions/js/script.js';
+            script.src = 'https://cdn.jsdelivr.net/gh/leizingyiu/AfterEffectsExpressions/js/script.js';
         } else {
+            console.log('script.js from local')
             script.src = '../js/script.js';
         }
         document.querySelector('body').appendChild(script);
@@ -83,17 +92,26 @@
     <script>
         function typing(selector) {
             let dom = document.querySelector(selector);
-            if ('undefined' == typeof i) { i = 0; }
+
+            if ('undefined' == typeof i) { i = 1; }
             if ('undefined' == typeof timer) { timer = 0; }
-            if ('undefined' == typeof str) { str = dom.innerText.replace(/\n/g, '➾'); }
+            if ('undefined' == typeof str) {
+                if (dom.innerText) {
+                    str = dom.innerText.replace(/\n/g, '➾');
+
+                } else { str = ""; }
+            }
+            if ('undefined' == typeof html) { html = dom.innerHTML; }
+
             if (i <= str.length) {
-                dom.innerHTML = str.slice(0, i++).replace(/➾/g, '<br>') + '_';
+                dom.innerHTML = str.slice(0, i++).replace(/➾/g, '<br>') + (Date.now() % 2 == 0 ? ' |' : '');
                 let ranTime = Math.random() * 200;
                 var nextTyping = function () { typing(selector) };
                 timer = setTimeout(nextTyping, ranTime)
             }
             else {
-                dom.innerHTML = str.replace(/➾/g, '<br>');
+                /*dom.innerHTML = str.replace(/➾/g, '<br>');*/
+                dom.innerHTML = html;
                 clearTimeout(timer)
             }
         };

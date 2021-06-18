@@ -18,22 +18,22 @@
 # 原来的弹性表达式在路径用不了，</br>现在，可以了！！！
 
 <br>
-<div style="background:#000;padding:2em 0;">
-<video src="../contents/video/bouncebackForPath_0.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video>
-<video src="../contents/video/bouncdbackForPath_1.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video></br>
-<video src="../contents/video/overShootForPath_0.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video>
-<video src="../contents/video/overShootForPath_1.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video></div>
+<div style="background:#000;margin:0.5em;" class='shadow'>
+<video src="../orginalExpressions/video/bouncebackForPath_0.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video>
+<video src="../orginalExpressions/video/bouncdbackForPath_1.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video></br>
+<video src="../orginalExpressions/video/overShootForPath_0.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video>
+<video src="../orginalExpressions/video/overShootForPath_1.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video></div>
 
 ## 如何使用
 
 做好路径动画之后，把表达式粘贴进去 <sub>(点击右边 COPY 按钮复制)
 
-<div style="background:#000;padding:1em;text-align: center;"><video src="../contents/video/overShootForPath_js_example.mp4" width="99%"  controls="controls" autoplay="autoplay" loop="loop" muted style=" display: inline;" ></video></div>
+<div style="padding:0.5em;text-align: center;"><video src="../orginalExpressions/video/overShootForPath_js_example.mp4" width="99%"  controls="controls" autoplay="autoplay" loop="loop" muted style=" display: inline;" class='shadow' ></video></div>
 
 或者做好路径动画之后，选中路径属性，双击预设 <sub>(右边 download 按钮下载，存去预设文件夹)</sub>
 
-<div style="background:#000;padding:1em;text-align: center;">
-<video src="../contents/video/bounceBackForPath_ffx_example.mp4" width="99%"  controls="controls" autoplay="autoplay" loop="loop" muted   style=" display: inline;"></video></div>
+<div style="padding:0.5em;text-align: center;">
+<video src="../orginalExpressions/video/bounceBackForPath_ffx_example.mp4" width="99%"  controls="controls" autoplay="autoplay" loop="loop" muted   style=" display: inline;" class='shadow' ></video></div>
 
 ## 表达式说明 <sub>(数学课时间)</sub>
 
@@ -41,15 +41,16 @@
 
 譬如使用弹性表达式，又或者使用一些插件
 
-<div style="background:#000;padding:1em;">
-<video src="../contents/video/overshootAndBounceback_oldExample_expression.mp4" width="96%"  controls="controls" autoplay="autoplay" loop="loop"   muted style='margin:1em;'></video>
-<video src="../contents/video/overshootAndBounceback_oldExample_plugin.mp4" width="96%"  controls="controls" autoplay="autoplay" loop="loop"    muted style='margin:1em;'></video></div>
+<div>
+<video src="../orginalExpressions/video/overshootAndBounceback_oldExample_expression.mp4" width="96%"  controls="controls" autoplay="autoplay" loop="loop"   muted style="margin-top:1em;" class='shadow' ></video>
+<video src="../orginalExpressions/video/overshootAndBounceback_oldExample_plugin.mp4" width="96%"  controls="controls" autoplay="autoplay" loop="loop"    muted style="margin-top:1em;" class='shadow' ></video>
+</div>
 
 <p style="font-size:4rem;text-align:center">😎</p>
 
 但是到目前<sub>（2021 年 6 月 5 日）</sub>为止，我没发现有什么其他办法，让路径动画轻松产生弹性
 
-<div><img src="../contents/img/overshootAndBounceback_expression_error.png" width="49%" style="display:inline;margin:0!important;padding:0!important"/><video  src="../contents/video/overshootAndBounceback_plugin_error.mp4"   controls="controls"   width="49%"  autoplay="autoplay" loop="loop" muted  style="width:'49%!important' ;display:inline"></video></div>
+<div><img src="../orginalExpressions/img/overshootAndBounceback_expression_error.png" width="49%" style="display:inline;margin:0!important;padding:0!important" class='shadow' /><video  src="../orginalExpressions/video/overshootAndBounceback_plugin_error.mp4"   controls="controls"   width="49%"  autoplay="autoplay" loop="loop" muted  style="width:'49%!important' ;display:inline" class='shadow' ></video></div>
 
 在 AE 推出路径相关表达式前，确实没有什么办法 🥺
 
@@ -59,9 +60,9 @@
 
 让路径自动产生弹性，成为可能 👍
 
-<div style="background:#000;padding:1em;">
-<video src="../contents/video/bouncdbackForPath_1.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video>
-<video src="../contents/video/overShootForPath_1.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted></video></div>
+<div style="padding:0.5em;">
+<video src="../orginalExpressions/video/bouncdbackForPath_1.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted class='shadow' ></video>
+<video src="../orginalExpressions/video/overShootForPath_1.mp4" width="49%"  controls="controls" autoplay="autoplay" loop="loop"  style="display:inline" muted class='shadow' ></video></div>
 
 <br>
 
