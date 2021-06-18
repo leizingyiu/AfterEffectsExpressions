@@ -538,3 +538,11 @@ div#zoomingImg img {
   border-radius: 0;
   background: rgba(0, 0, 0, 0);
 }
+
+*{  scrollbar-color: rgba(0, 0, 0, 0.08) rgba(0,0,0,0);
+  scrollbar-width: thin;
+}
+
+*:hover{  scrollbar-color: rgba(0, 0, 0, 0.32) rgba(0,0,0,0);
+  scrollbar-width: thin;
+}
