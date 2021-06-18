@@ -1,4 +1,4 @@
-let debuging = true;
+let debuging = false;
 console.log = debuging ? console.log : (() => void 0);
 
 /** 页面标题设置 */
@@ -64,7 +64,11 @@ var writeMarkDown = function (cssSelector, fn, callback) {
         var content = arguments[arguments.length - 1]['response'];
         var status = arguments[arguments.length - 1]['status'];
         var filename = decodeURIComponent(arguments[arguments.length - 1]['responseURL']).match(/(?<=\/)[^\/]+$/g);
-        document.querySelector(cssSelector).innerHTML = "<title>" + filename + "</title>" + fn(marked(content));
+        if (status != '200' || content == '') {
+            document.querySelector(cssSelector).innerHTML = ' (´ﾟдﾟ`) 这个页面还没做，快了快了 (๑•́ ₃ •̀๑)';
+        } else {
+            document.querySelector(cssSelector).innerHTML = "<title>" + filename + "</title>" + fn(marked(content));
+        }
         if ("undefined" != typeof callback) {
             callback();
         }
