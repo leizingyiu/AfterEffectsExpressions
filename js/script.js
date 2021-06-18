@@ -570,25 +570,29 @@ function catalogInteraction() {
         };
 
 
-        [...dl.querySelectorAll('li a')].map(i => i.onclick = function () {
-            /**鼠标hover时，折叠其他 */
-            // let p = i.parentElement;
-            // while (p.id != dl.id) { p = p.parentElement; }
-            // [...p.parentElement.children].map(function (j) { j.className = 'fold'; });
-            // p.removeAttribute('class');
-            /**鼠标hover时，折叠其他 */
+        [...dl.querySelectorAll('li a')].map(function (i) {
+            if (document.getElementById('websiteCatalog').contains(i)) {
+                i.onclick = function () {
+                    /**鼠标hover时，折叠其他 */
+                    // let p = i.parentElement;
+                    // while (p.id != dl.id) { p = p.parentElement; }
+                    // [...p.parentElement.children].map(function (j) { j.className = 'fold'; });
+                    // p.removeAttribute('class');
+                    /**鼠标hover时，折叠其他 */
 
-            let langSuffix = getLangSuffixFromSearch();
-            window.history.replaceState({}, null, '?' + dl.id + '=' + i.innerText + (langSuffix != '' ? '&lang=' +
-                langSuffix : ''));
-            if (i.getAttribute('data-file-type') == 'md') {
-                console.log('click md');
-                sendGETRequest('./' + dl.id + '/' + i.innerText + (i.getAttribute('data-file-type') ? '.' + i.getAttribute('data-file-type') : ''), {}, 'text', writeMarkDown('#content div', writingContentFn, writingContentCallback));
-            } else if (i.getAttribute('data-file-type') != 'md' || i.innerText.indexOf('.js' != -1)) {
-                console.log('click not md');
-                sendGETRequest('./' + dl.id + '/' + i.innerText + (i.getAttribute('data-file-type') ? '.' + i.getAttribute('data-file-type') : ''), {}, 'text', writeHtml('#content div', writingExpressionCallback));
+                    let langSuffix = getLangSuffixFromSearch();
+                    window.history.replaceState({}, null, '?' + dl.id + '=' + i.innerText + (langSuffix != '' ? '&lang=' +
+                        langSuffix : ''));
+                    if (i.getAttribute('data-file-type') == 'md') {
+                        console.log('click md');
+                        sendGETRequest('./' + dl.id + '/' + i.innerText + (i.getAttribute('data-file-type') ? '.' + i.getAttribute('data-file-type') : ''), {}, 'text', writeMarkDown('#content div', writingContentFn, writingContentCallback));
+                    } else if (i.getAttribute('data-file-type') != 'md' || i.innerText.indexOf('.js' != -1)) {
+                        console.log('click not md');
+                        sendGETRequest('./' + dl.id + '/' + i.innerText + (i.getAttribute('data-file-type') ? '.' + i.getAttribute('data-file-type') : ''), {}, 'text', writeHtml('#content div', writingExpressionCallback));
+                    }
+                    //document.querySelector('#main').className = 'detail';
+                }
             }
-            //document.querySelector('#main').className = 'detail';
         });
         [...dl.querySelectorAll('li a')].map(function (a) {
             a.href = 'javascript:void 0';
