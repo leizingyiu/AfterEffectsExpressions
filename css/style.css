@@ -13,6 +13,9 @@ body {
   height: 100%;
   overflow: hidden;
 }
+body>*:not([display]){
+  display: none!important;
+}
 
 #main {
   width: 100%;

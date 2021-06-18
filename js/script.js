@@ -348,7 +348,7 @@ function writeTitleAndExpressions(content) {
         }
     }
 
-
+    tempDiv.setAttribute('style', 'display:none!important')
     tempDiv.parentElement.removeChild(tempDiv);
     //console.log(content);
     return content;
