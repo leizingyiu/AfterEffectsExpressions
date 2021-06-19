@@ -1,4 +1,5 @@
 let debuging = false;
+debuging = location.host.match(/[a-zA-Z]/g) ? debuging : true;
 console.log = debuging ? console.log : (() => void 0);
 
 /** 页面标题设置 */
@@ -333,7 +334,8 @@ function writeTitleAndExpressions(content) {
                     div.appendChild(pre);
 
                     copyButton.onclick = function () {
-                        copyOrNotWithUrl(script)
+                        console.log('click copy button');
+                        copyOrNotWithUrl(script);
                     };
                     div.appendChild(copyButton);
 
@@ -573,13 +575,6 @@ function catalogInteraction() {
         [...dl.querySelectorAll('li a')].map(function (i) {
             if (document.getElementById('websiteCatalog').contains(i)) {
                 i.onclick = function () {
-                    /**鼠标hover时，折叠其他 */
-                    // let p = i.parentElement;
-                    // while (p.id != dl.id) { p = p.parentElement; }
-                    // [...p.parentElement.children].map(function (j) { j.className = 'fold'; });
-                    // p.removeAttribute('class');
-                    /**鼠标hover时，折叠其他 */
-
                     let langSuffix = getLangSuffixFromSearch();
                     window.history.replaceState({}, null, '?' + dl.id + '=' + i.innerText + (langSuffix != '' ? '&lang=' +
                         langSuffix : ''));
@@ -590,10 +585,10 @@ function catalogInteraction() {
                         console.log('click not md');
                         sendGETRequest('./' + dl.id + '/' + i.innerText + (i.getAttribute('data-file-type') ? '.' + i.getAttribute('data-file-type') : ''), {}, 'text', writeHtml('#content div', writingExpressionCallback));
                     }
-                    //document.querySelector('#main').className = 'detail';
                 }
             }
         });
+
         [...dl.querySelectorAll('li a')].map(function (a) {
             a.href = 'javascript:void 0';
         })
@@ -650,11 +645,13 @@ Object.keys(search).map(key => (function () {
 function copyOrNotWithUrl(str) {
     let a = document.createElement("textarea");
     a.value = str + '\n/* 来源：' + decodeURIComponent(location.href) + ' */';
+    a.setAttribute('display', 'display');
     document.body.appendChild(a);
     a.select();
     let maxLength = 300;
     let resultBoo = window.confirm('将以下内容复制到剪贴板?\n' + (str.length > maxLength ? str.substr(0, maxLength) + '......' : str));
-    if (resultBoo == true) {
+    console.log(resultBoo);
+    if (resultBoo) {
         document.execCommand("Copy");
     }
     a.style.display = "none";
