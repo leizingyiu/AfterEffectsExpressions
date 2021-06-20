@@ -10,8 +10,8 @@
   padding: 0.7em;
 }
 .markdown-body p {
-  margin: 1em 0;
-  line-height: 1.5em;
+  margin: 2em 0;
+  line-height: 2em;
 }
 .markdown-body table {
   font-size: inherit;

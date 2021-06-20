@@ -2,19 +2,15 @@
   transition: all 0.15s !important;
 }
 
-/* html,
-body {
-  overflow: scroll;
-  height: 100%;
-} */
 body {
   font-size: 2vmin;
   line-height: 1.5em;
   height: 100%;
   overflow: hidden;
 }
-body>*:not([display]){
-  display: none!important;
+
+body>*:not([display]) {
+  display: none !important;
 }
 
 #main {
@@ -61,10 +57,25 @@ body>*:not([display]){
   letter-spacing: 0.05em;
   font-weight: 400;
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(.17, .67, .83, .67);
 }
-#main #catalog dl{
+
+#main #catalog:hover #title {
+  font-size: 0.9em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+#main #catalog:hover #title:hover {
+  font-size: 1.5em;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+#main #catalog dl {
   margin-top: 1rem;
 }
+
 #main #catalog dl:before {
   content: attr(alt);
   font-size: 0.5rem;
@@ -78,6 +89,7 @@ body>*:not([display]){
   white-space: pre;
   transition: all 0.2s ease !important;
 }
+
 #main #catalog dl.fold:before {
   content: attr(alt);
   height: 0;
@@ -102,9 +114,11 @@ body>*:not([display]){
   top: 0;
   background-color: rgba(255, 255, 255, 0.9);
 }
-#main #catalog dl.fold dt{
-  cursor:s-resize;
+
+#main #catalog dl.fold dt {
+  cursor: s-resize;
 }
+
 #main #catalog dt::before {
   content: ' ';
   display: block;
@@ -164,7 +178,7 @@ body>*:not([display]){
   letter-spacing: 0.05em;
 }
 
-#main #content section{
+#main #content section {
   display: block;
   box-sizing: border-box;
   position: relative;
@@ -179,11 +193,11 @@ body>*:not([display]){
   height: 1.5em;
   bottom: 0;
   left: 50%;
-  background-image: linear-gradient(white,  rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0),rgba(255, 255, 255, 0))   , linear-gradient(white, rgba(0,0,0,0.08), rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.005), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(white, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(white, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.005), rgba(0, 0, 0, 0));
   position: absolute;
   /* background: black; */
-  transform: translate(-50%,1.4em);
-  transition: none!important;
+  transform: translate(-50%, 1.4em);
+  transition: none !important;
 }
 
 #main #content div.markdown-body {
@@ -263,6 +277,38 @@ body>*:not([display]){
   overflow: hidden;
 }
 
+#main #content div.markdown-body .keyboard {
+  border: solid 0.1px #ccc;
+  padding: 0em 0.5em;
+  border-radius: 4px;
+  box-shadow: 0 4px 0 #ccc;
+  transform: translate(0px, -4px);
+  position: relative;
+  z-index: 1;
+}
+
+#main #content div.markdown-body .keyboard:hover {
+  box-shadow: 0 1px 0 #aaa;
+  transform: translate(0px, -1px);
+}
+
+#main #content div.markdown-body .keyboard:after {
+  content: attr(alt);
+  position: absolute;
+  font-size: 1em;
+  background: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  top: 0;
+  left: 50%;
+  transform: scale(0.8) translate(-50%, 0);
+  z-index: -1;
+  transition: all 0.5s ease;
+}
+
+#main #content div.markdown-body .keyboard:hover:after {
+  opacity: 1;
+  transform: scale(0.9) translate(-50%, -100%);
+}
 
 #main #expression {
   display: flex;
@@ -539,10 +585,12 @@ div#zoomingImg img {
   background: rgba(0, 0, 0, 0);
 }
 
-*{  scrollbar-color: rgba(0, 0, 0, 0.08) rgba(0,0,0,0);
+* {
+  scrollbar-color: rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0);
   scrollbar-width: thin;
 }
 
-*:hover{  scrollbar-color: rgba(0, 0, 0, 0.32) rgba(0,0,0,0);
+*:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.32) rgba(0, 0, 0, 0);
   scrollbar-width: thin;
 }
