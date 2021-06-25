@@ -1,4 +1,4 @@
-let debuging = false;
+var debuging = false;
 debuging = location.host.match(/[a-zA-Z]/g) ? debuging : true;
 console.log = debuging ? console.log : (() => void 0);
 
