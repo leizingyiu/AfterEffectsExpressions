@@ -574,7 +574,7 @@ div#zoomingImg img.zoomin {
   transform: none;
 }
 
-div#zoomingImg img.zoomin[src*=svg]{
+div#zoomingImg img.zoomin[src*='svg']{
   width: auto!important;
 }
 
