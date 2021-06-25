@@ -122,6 +122,7 @@ var writeHtml = function (cssSelector, fn) {
         let imgId = 'zooming';
         let divId = "zoomingImg";
 
+
         let imgs = document.querySelectorAll('img');
         [...imgs].map(function (img) {
             img.style.cursor = 'zoom-in';
@@ -130,21 +131,70 @@ var writeHtml = function (cssSelector, fn) {
 
         function enlargeImg(img) {
             img.id = imgId;
+            var zoominImgClass = 'zoomin';
+            var hideDivClass = 'hide';
+            var onImgDivClass = 'onImg';
 
-            let div = document.createElement('div');
-            div.id = divId;
+            console.log("document.querySelector('#' + divId) " + document.querySelector('#' + divId));
+            if (document.querySelector('#' + divId) == null) {
+                var div = document.createElement('div');
+                div.setAttribute('display', '');
+                div.id = divId;
+                div.addEventListener('click',
+                    function () {
+                        window.event.stopPropagation()
+                        console.log(1)
+                        div.classList.toggle(hideDivClass);
+                        console.log(2)
+                        console.log(Date())
+                        return false;
+                    }, false);
+            } else {
+                div = document.getElementById(divId);
+            }
+            console.log("div.querySelector('img')" + div.querySelector('img'));
+            if (div.querySelector('img') == null) {
+                var i = document.createElement('img');
+                i.setAttribute('display', '');
+                i.addEventListener('click',
+                    function imgRealSize() {
+                        window.event.stopPropagation()
+                        console.log(3);
+                        if (i.className.indexOf(onImgDivClass) == -1) {
+                            i.classList.toggle(zoominImgClass);
+                        }
+                        console.log(4);
+                        console.log(Date())
+                        return false;
+                    }, false);
+                i.addEventListener('mouseover',
+                    function () {
+                        window.event.stopPropagation();
+                        i.parentElement.classList.add(onImgDivClass);
+                        return false;
+                    }, false);
+                i.addEventListener('mouseleave',
+                    function () {
+                        window.event.stopPropagation();
+                        i.parentElement.classList.remove(onImgDivClass);
+                        return false;
+                    }, false);
+            } else {
+                i = div.getElementsByTagName('img')[0];
+            }
 
-            let i = document.createElement('img');
+
+
 
             i.src = img.src;
-            div.setAttribute('alt', img.alt);
-            div.onclick = i.onclick = function () {
-                div.parentElement.removeChild(div);
-                return false;
+            div.setAttribute('alt', img.alt ? img.alt : ' ');
+
+            if (document.querySelector('#' + divId) == null) {
+                document.body.appendChild(div);
+                div.appendChild(i);
+            } else {
+                div.classList.remove(hideDivClass);
             }
-            document.body.appendChild(div);
-            div.appendChild(i);
-            console.log(div.alt);
         }
     }
     function switchImage(leftBoolean) {
