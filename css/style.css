@@ -7,9 +7,13 @@ body {
   line-height: 1.5em;
   height: 100%;
   overflow: hidden;
+  font-family: Tahoma, Verdana, "Gill Sans", Helvetica, "Helvetica Neue",
+    "lucida grande", "lucida sans unicode", lucida, "Hiragino Sans GB",
+    "San Francisco", "PingFang SC", "STXihei", "Microsoft Yahei",
+    "WenQuanYi Micro Hei", sans-serif;
 }
 
-body>*:not([display]) {
+body > *:not([display]) {
   display: none !important;
 }
 
@@ -19,12 +23,12 @@ body>*:not([display]) {
   display: flex;
 }
 
-#main>li {
+#main > li {
   display: block;
   border: 0.5px solid #eee;
 }
 
-#main>li>* {
+#main > li > * {
   padding: 1rem;
 }
 
@@ -57,7 +61,7 @@ body>*:not([display]) {
   letter-spacing: 0.05em;
   font-weight: 400;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(.17, .67, .83, .67);
+  transition: all 0.2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
 }
 
 #main #catalog:hover #title {
@@ -120,7 +124,7 @@ body>*:not([display]) {
 }
 
 #main #catalog dt::before {
-  content: ' ';
+  content: " ";
   display: block;
   width: 0.3em;
   height: 0.3em;
@@ -140,7 +144,6 @@ body>*:not([display]) {
   transition: all 0.5s ease-in-out !important;
 }
 
-
 #main #catalog dl.fold dt {
   opacity: 0.5;
 }
@@ -151,13 +154,11 @@ body>*:not([display]) {
   opacity: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out !important;
-
 }
 
 #main #catalog dl dd::-webkit-scrollbar {
   width: 0;
 }
-
 
 #main #catalog dl.fold dt::before {
   transform: rotate(135deg);
@@ -185,7 +186,7 @@ body>*:not([display]) {
 }
 
 #main #content section::after {
-  content: ' ';
+  content: " ";
   display: block;
   width: 100%;
   margin: 0;
@@ -193,7 +194,26 @@ body>*:not([display]) {
   height: 1.5em;
   bottom: 0;
   left: 50%;
-  background-image: linear-gradient(white, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(white, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.005), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(
+      white,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0)
+    ),
+    linear-gradient(
+      white,
+      rgba(0, 0, 0, 0.08),
+      rgba(0, 0, 0, 0.06),
+      rgba(0, 0, 0, 0.04),
+      rgba(0, 0, 0, 0.02),
+      rgba(0, 0, 0, 0.01),
+      rgba(0, 0, 0, 0.005),
+      rgba(0, 0, 0, 0)
+    );
   position: absolute;
   /* background: black; */
   transform: translate(-50%, 1.4em);
@@ -206,12 +226,12 @@ body>*:not([display]) {
   scroll-behavior: smooth;
   text-align: center;
 }
-#main #content div.markdown-body *{
+#main #content div.markdown-body * {
   text-align: left;
 }
 
 #main #content div.markdown-body::after {
-  content: '';
+  content: "";
   width: 100%;
   height: 10vh;
   display: block;
@@ -226,7 +246,7 @@ body>*:not([display]) {
 #main #content div.markdown-body pre::after {
   pointer-events: auto;
   cursor: pointer;
-  content: 'COPY';
+  content: "COPY";
   display: block;
   position: absolute;
   right: 5px;
@@ -305,11 +325,7 @@ body>*:not([display]) {
   justify-content: space-between;
   height: 100%;
   overflow: hidden;
-
 }
-
-
-
 
 /* ————————————  exprossions before by pre */
 /* 
@@ -355,8 +371,6 @@ opacity: 0.05;
   position: relative;
   padding: 0 !important;
   border-bottom: 2px solid #eee !important;
-
-
 }
 
 #main #expression div:last-of-type {
@@ -369,12 +383,10 @@ opacity: 0.05;
 
 #main #expression:hover div::before {
   opacity: 0.6;
-  ;
 }
 
 #main #expression:hover div:hover::before {
   opacity: 0.2;
-  ;
 }
 
 #main #expression div:before {
@@ -498,10 +510,9 @@ opacity: 0.05;
 
 /* ———————————— exprossions before title*/
 
-
 /* 圖片放大 ⬇️  */
 
-.markdown-body img{
+.markdown-body img {
   cursor: pointer;
 }
 div#zoomingImg {
@@ -515,20 +526,19 @@ div#zoomingImg {
   /* pointer-events: none; */
   background: rgba(0, 0, 0, 0.8);
   overflow: hidden;
-  z-index:-1;
+  z-index: -1;
   transition: all 0.5s ease-in-out !important;
 }
 div#zoomingImg.show {
-  width: 100%!important;
-  height: 100%!important;
-  top: 0%!important;
-  left: 0%!important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0% !important;
+  left: 0% !important;
   cursor: zoom-out;
   opacity: 1;
   overflow: scroll;
   z-index: 2;
   transition: all 0.5s ease-in-out !important;
-
 }
 
 div#zoomingImg.show::after {
@@ -542,7 +552,7 @@ div#zoomingImg.show::after {
 }
 
 div#zoomingImg.show::before {
-  content: '⤬';
+  content: "⤬";
   position: absolute;
   right: 0;
   top: 0;
@@ -551,18 +561,18 @@ div#zoomingImg.show::before {
   font-weight: 200;
   padding: 0.25em;
   opacity: 0.6;
-  transform: translate(0,0);
+  transform: translate(0, 0);
   pointer-events: auto;
 }
-div#zoomingImg.show::before:hover{
+div#zoomingImg.show::before:hover {
   opacity: 0.8;
   cursor: pointer;
-transform: translate(0,-2px);
+  transform: translate(0, -2px);
 }
 div#zoomingImg img {
   position: absolute;
   width: auto;
-  height:auto;
+  height: auto;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -571,13 +581,13 @@ div#zoomingImg img {
 }
 
 div#zoomingImg.show img {
-  width: auto!important;
-  height:auto!important;
+  width: auto !important;
+  height: auto !important;
   max-width: 90vw;
   max-height: 90vh;
   cursor: zoom-in;
   transition: all 0.5s ease-in-out;
-  pointer-events:auto ;
+  pointer-events: auto;
 }
 
 div#zoomingImg.show img.zoomin {
@@ -590,14 +600,14 @@ div#zoomingImg.show img.zoomin {
   transform: none;
 }
 
-div#zoomingImg.show img.zoomin[src*='svg']{
-  width: auto!important;
+div#zoomingImg.show img.zoomin[src*="svg"] {
+  width: auto !important;
 }
 
-div#zoomingImg.onImg{
-  pointer-events:none;
+div#zoomingImg.onImg {
+  pointer-events: none;
 }
-div#zoomingImg.onImg img{
+div#zoomingImg.onImg img {
   pointer-events: auto;
 }
 
@@ -647,7 +657,6 @@ div#zoomingImg ::-webkit-scrollbar {
   border-radius: 0;
   background: rgba(0, 0, 0, 0);
 }
-
 
 * {
   scrollbar-color: rgba(0, 0, 0, 0.08) rgba(0, 0, 0, 0);
