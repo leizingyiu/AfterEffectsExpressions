@@ -79,14 +79,19 @@
     <script>
         /*判断是否本地*/
         var script = document.createElement('script');
-        if (location.host.match(/[a-zA-Z]/g)) {
 
-            console.log('script.js from online');
-            //            script.src = 'https://leizingyiu.github.io/AfterEffectsExpressions/js/script.js';
-            script.src = 'https://cdn.jsdelivr.net/gh/leizingyiu/AfterEffectsExpressions/js/script.js';
-        } else {
-            console.log('script.js from local')
-            script.src = '../js/script.js';
+        switch (true) {
+            case location.hostname.indexOf('github') != -1:
+                console.log('load script from jsdelivr');
+                script.src = 'https://cdn.jsdelivr.net/gh/leizingyiu/AfterEffectsExpressions/js/script.js';
+                break;
+            case location.hostname.indexOf('leizingyiu') != -1:
+                console.log('load script from oss');
+                script.src = 'http://leizingyiu.net/AfterEffectsExpressions/js/script.js';
+                break;
+            default:
+                console.log('load script from local');
+                script.src = './js/script.js';
         }
         document.querySelector('body').appendChild(script);
     </script>
@@ -124,14 +129,21 @@
         };
     </script>
 
+    <!-- 统计 -->
+    <!-- <script type="text/javascript" src="https://s9.cnzz.com/z_stat.php?id=1280029923&web_id=1280029923"></script> -->
+    <script>
+        window.onload = function () {
+            var script = document.createElement('script');
+            script.src = "https://s9.cnzz.com/z_stat.php?id=1280029923&web_id=1280029923";
+            script.type = "text/javascript";
+            document.body.appendChild(script);
+        }
+    </script>
+
     <ol id=‘topNav’ display="display">
         <li><a href=""></a></li>
     </ol>
 
-
-
-    <!-- 统计 -->
-    <script type="text/javascript" src="https://s9.cnzz.com/z_stat.php?id=1280029923&web_id=1280029923"></script>
 </body>
 
 </html>

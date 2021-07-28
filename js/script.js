@@ -1,4 +1,4 @@
-var debuging = false;
+var debuging = true;
 debuging = location.host.match(/[a-zA-Z]/g) ? debuging : true;
 console.log = debuging ? console.log : (() => void 0);
 
@@ -19,8 +19,12 @@ function getSearchJson() {
     return param;
 };
 var search = getSearchJson();
-var hostAndPath = location.host.match(/[a-zA-Z]/g) ? 'https://cdn.jsdelivr.net/gh/leizingyiu/AfterEffectsExpressions/' : '..' + String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
-console.log(hostAndPath);
+var protocolAndHostAndPath = '';
+// hostAndPath = location.host.match(/[a-zA-Z]/g) ? 'https://cdn.jsdelivr.net/gh/leizingyiu/AfterEffectsExpressions/' : '..' + String(location.pathname.match(/\/.*\//)).replace(/^null$/, '');
+
+protocolAndHostAndPath = location.host.match('github.io') ? 'https://cdn.jsdelivr.net/gh/leizingyiu/AfterEffectsExpressions/' : (location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/g, ''));
+
+console.log(protocolAndHostAndPath);
 
 /* 获取网址关于语言的参数 */
 function getLangSuffixFromSearch() {
@@ -241,7 +245,7 @@ var writeHtml = function (cssSelector, fn) {
     document.addEventListener("keydown", keyboard);
 
     window.onload = window.onscroll = document.querySelector('.markdown-body').onscroll = function () {
-        checkLazyLoading('.markdown-body img,.markdown video');
+        checkLazyLoading('.markdown-body img,.markdown video,video');
     }
     var observer = new MutationObserver(mutations => {
         checkLazyLoading('.markdown-body img,.markdown video');
@@ -269,10 +273,18 @@ function imgSrcToOnline(content) {
     // let b = content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, '$1'); console.log(b);
     // let c = content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, location.protocol + "//" + location.hostname + location.pathname); console.log(c);
 
-    return location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content : content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, hostAndPath);
+    return location.host.match(/\d{0,3}\.\d{0,3}\.\d{0,3}\.\d{0,3}/g) ? content : content.replace(/(?<=<((img)|(video)).*?src=['"])(\.\.)(?=[^'"]*['"][^>]+>)/g, protocolAndHostAndPath);
     /*location.protocol + "//" + location.hostname + location.pathname*/
 }
 
+function imgScrSwitch(content) {
+    var result = '';
+    var reg = /(?<=<img.*?src=['"])(https:\/\/pic\.leizingyiu\.net)([^'"]*)(?=['"][^>]+>)/g;
+    var preLink = (location.host.match('leizingyiu.net') ? 'pic.leizingyiu.net' : protocolAndHostAndPath);
+    console.log(preLink);
+    result = content.replace(reg, preLink + '$2');
+    return result;
+}
 function imgSrcToDataSrc(content) {
     return content.replace(/(<img.*)(src=['"][^'"]*['"][^>]*>)/g, '$1 data-$2');
 }
@@ -343,17 +355,17 @@ function writeTitleAndExpressions(content) {
                     if (parameter['expressions'][js][key] instanceof Array) {
                         parameter['expressions'][js][key].map(v => (function () {
                             let text = key + ' ' + v.match(/(?<=\.).*/);
-                            let target = hostAndPath + '/' + key + '/' + v;
+                            let target = protocolAndHostAndPath + '/' + key + '/' + v;
                             buttonFn(text, target);
                         })())
                     } else {
                         let text = key + ' ' + parameter['expressions'][js][key].match(/(?<=\.).*/);
-                        let target = hostAndPath + '/' + key + '/' + parameter['expressions'][js][key];
+                        let target = protocolAndHostAndPath + '/' + key + '/' + parameter['expressions'][js][key];
                         buttonFn(text, target);
                     }
                 })())
 
-                let expressionUrl = hostAndPath + '/expressions/' + js;
+                let expressionUrl = protocolAndHostAndPath + '/expressions/' + js;
                 console.log(expressionUrl);
 
                 let script = '';
@@ -505,10 +517,11 @@ function runFns() {
         arg.map(fn => fn());
     }
 }
-
+/** remove:   imgSrcToLocal,    imgSrcToOnline
+ * add: imgScrSwitch
+*/
 var writingContentFn = returnFnFromArgs(
-    imgSrcToLocal,
-    imgSrcToOnline,
+    imgScrSwitch,
     imgSrcToDataSrc,
     imgZoonToWidth,
     writeTitleAndExpressions,
