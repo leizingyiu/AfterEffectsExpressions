@@ -106,6 +106,7 @@ function translate(x, y) {
 }
 
 function rotate(a) {
+    a = a / 180 * Math.PI;
     return [
         Math.cos(a), Math.sin(a), 0,
         -Math.sin(a), Math.cos(a), 0,
@@ -114,6 +115,7 @@ function rotate(a) {
 }
 
 function skewX(a) {
+    a = a / 180 * Math.PI;
     return [
         1, Math.tan(a), 0,
         0, 1, 0,
@@ -122,32 +124,14 @@ function skewX(a) {
 }
 
 function skew(a, axisDeg) {
+    a = a / 180 * Math.PI;
+    axisDeg = axisDeg / 180 * Math.PI;
     let mixMatrix = mtrMultMtr(rotate(axisDeg), skewX(a));
     return mtrMultMtr(mixMatrix, rotate(-axisDeg));
 }
 
-translate(-100, -50)
-
-
-
-/** */
 
 
 
 
-
-function vecMultMtr(v, m) {
-    var a = 0, b = 1, c = 3, d = 4, e = 6, f = 7, x = 0, y = 1;
-    if (m.length == 6) {
-        var endM = [0, 0, 1];
-        endM.map((i, idx) => m.splice(idx * 3 + 2, 0, i));
-    }
-    let res = [];
-    res[x] = v[x] * m[a] + v[y] * m[c] + m[e];
-    res[y] = v[x] * m[b] + v[y] * m[d] + m[f];
-    return res;
-}
-console.log(scale(2, 1.5));
-var res = vecMultMtr([80, 80], scale(2, 1.5))
-console.log(res)
 
