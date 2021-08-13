@@ -43,15 +43,61 @@ function mtrMultMtr(matrixA, matrixB) {
     return res;
 }
 
+function mtrMultMtr(matrixA, matrixB) {
+    [...arguments].map(function (arg) {
+        if (arg.length == 6) {
+            var endM = [0, 0, 1];
+            endM.map((i, idx) => arg.splice(idx * 3 + 2, 0, i));
+        }
+    })
+    let txt = '';
+    let idTxt = '';
+    let res = [];
+    let b = 0;
+    let l = matrixA.length;
+    let L = Math.pow(l, 0.5);
+    let m = 0, n = 0;
+    for (let k = 0; k < l; k++) {
+        let a = Math.floor(k / L);
+        let N = 0;
 
-mtrMultMtr([1, 1, 1, 1], [1, 0, 4, 5])
+        for (let j = 0; j < l; j += L) {
+            m = j / L;
+            n = j;
+            txt += matrixA[a + m] + ' x ' + matrixB[b + n] + ' + ';
+            idTxt += (a + m + 1) + ' x ' + (b + n + 1) + '   ';
+
+            N += matrixA[a + m] * matrixB[b + n];
+        }
+        b++;
+        if (b == L) {
+            txt += '\n';
+            idTxt += '\n';
+            b = 0;
+        } else {
+            txt += '    ';
+            idTxt += '    ';
+        };
+        res.push(N)
+    }
+    console.log(txt);
+    console.log(idTxt);
+    return res;
+}
+M = mtrMultMtr([1, 2, 3, 4, 5, 6, 7, 8, 9], [1, 2, 3, 1, 2, 3, 1, 2, 3])
+console.log(M)
+
 
 
 mtrMultMtr([1, 0, 1, 1], [1, 0, 4, 5])
 
 
 function vecMultMtr(v, m) {
-    var a = 0, b = 1, c = 2, d = 3, e = 4, f = 5, x = 0, y = 1;
+    var a = 0, b = 1, c = 3, d = 4, e = 6, f = 7, x = 0, y = 1;
+    if (m.length == 6) {
+        var endM = [0, 0, 1];
+        endM.map((i, idx) => m.splice(idx * 3 + 2, 0, i));
+    }
     let res = [];
     res[x] = v[x] * m[a] + v[y] * m[c] + m[e];
     res[y] = v[x] * m[b] + v[y] * m[d] + m[f];
