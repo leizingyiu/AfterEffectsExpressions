@@ -1,5 +1,5 @@
-
 function mtrMultMtr(matrixA, matrixB) { [...arguments].map((function (arg) { var endM; 6 == arg.length && [0, 0, 1].map((i, idx) => arg.splice(3 * idx + 2, 0, i)) })); let res = [], b = 0, l = matrixA.length, L = Math.pow(l, .5); for (let k = 0; k < l; k++) { let a = Math.floor(k / L), N = 0; for (let j = 0; j < l; j += L)N += matrixA[a * L + j / L] * matrixB[b + j]; b++, b == L && (b = 0), res.push(N) } return res }
+
 function mtrMults() { var arg = [...arguments], result; return arg.splice(0, 2), result = arguments.length > 1 ? arguments.length > 2 ? mtrMults(mtrMultMtr(arguments[0], arguments[1]), ...arg) : mtrMultMtr(arguments[0], arguments[1]) : arguments[0] }
 
 
@@ -65,61 +65,48 @@ function transform(v2d, transformPropGroup) {
 var range = (min, max, step) => [...new Array(Math.floor((max + step - min) / step))].map((n, idx) => idx * step + min);
 
 
-// var pathProp = thisComp.layer("sourcePath2").content("组 1").content("组 1").content("path").path;
 
-// var P = pathProp.points();
-// var I = pathProp.inTangents();
-// var O = pathProp.outTangents();
+function propGroupTransformKeyTimes(prop) {
+    var i = 1, keyTimesArr = [], p;
+    while (typeof (prop.propertyGroup(i).hasParent) == 'undefined') {
+        p = prop.propertyGroup(i);
+        ('undefined' != typeof p.transform) && (range(1, p.transform.numProperties, 1).map(j => range(1, (p.transform(j).name != p.transform.opacity.name) && p.transform(j).numKeys, 1).map(k => keyTimesArr.push(p.transform(j).key(k).time))));
+        i++
+    }
+    return keyTimesArr;
+}
+function propertyKeyTimes(prop) {
+    return range(1, prop.numKeys, 1).map(i => prop.key(i).time);
+}
 
-// P.map(function (p, idx) {
-//     I[idx] = add(I[idx], P[idx]);
-//     O[idx] = add(O[idx], P[idx]);
-//     return p;
-// })
-
-// var tMatrix = aePropGroupTransformsMatrix(pathProp);
-
-// P = P.map(a => vecMultMtr(a, tMatrix));
-// I = I.map(a => vecMultMtr(a, tMatrix));
-// O = O.map(a => vecMultMtr(a, tMatrix));
+function propAndGroupKeyTimes(prop) {
+    return [...new Set([...propGroupTransformKeyTimes(prop), ...propertyKeyTimes(prop)].sort())]
+}
 
 
-// P.map(function (p, idx) {
-//     I[idx] = sub(I[idx], P[idx]);
-//     O[idx] = sub(O[idx], P[idx]);
-//     return p;
-// })
+function propLayerInThisComp(prop) { var i = 0; while (typeof (prop.propertyGroup(i + 1).hasParent) == 'undefined') { i++ } var result = thisComp.layer(prop.propertyGroup(i + 1).name); return result; }
 
-// createPath(P, I, O, false);
 
-/**     */
-
-var setup= {keyTimeDura:{'CompDura':true, 'keyDura':false}};
-var keyTimeDura=Object.keys(setup.keyTimeDura).map(i=>setup.keyTimeDura[i]==true?i:'').filter(Boolean)[0];
+var setup = { keyTimeDura: { 'CompDura': true, 'keyDura': false } };
+var keyTimeDura = Object.keys(setup.keyTimeDura).map(i => setup.keyTimeDura[i] == true ? i : '').filter(Boolean)[0];
 
 var prop = thisComp.layer("sourcePath2").content("组 1").content("组 1").content('path').path;
+var pLayer = propLayerInThisComp(prop);
 
 var P, I, O, values = '', keyTimes = '', begin = '', dur = '';
 var tMatrix = aePropGroupTransformsMatrix(prop);
 
-function propLayerInThisComp(prop) { var i = 0; while (typeof (prop.propertyGroup(i + 1).hasParent) == 'undefined') { i++ } var result = thisComp.layer(prop.propertyGroup(i + 1).name); return result; }
-var pLayer = propLayerInThisComp(prop);
+
+var keyTimesArr = propAndGroupKeyTimes(prop);
+
+keyTimeDura == 'CompDura' && keyTimesArr.push(0) && keyTimesArr.push(thisComp.duration);
+keyTimesArr.sort();
 
 
-var propKeytimes = [];
-keyTimeDura=='CompDura'&&propKeytimes.push(0);
-for (let i = 1; i < prop.numKeys + 1; i++) {
-    if (prop.numKeys == 0) {
-        break;
-    } else {
-        propKeytimes.push(prop.key(i).time);
-    }
-}
-keyTimeDura=='CompDura'&&propKeytimes.push(thisComp.duration);
 
 
-for (let i = 0; i < propKeytimes.length; i++) {
-    let T = propKeytimes[i];
+for (let i = 0; i < keyTimesArr.length; i++) {
+    let T = keyTimesArr[i];
     P = prop.points(T);
     I = prop.inTangents(T);
     O = prop.outTangents(T);
@@ -128,12 +115,12 @@ for (let i = 0; i < propKeytimes.length; i++) {
         O[idx] = add(O[idx], P[idx]);
         return p;
     })
-
     for (let j = 0; j < P.length; j++) {
         values += '\n';
+        let CP = pLayer.toComp(vecMultMtr(P[j], tMatrix));
         if (j == 0) {
-            let CP = pLayer.toComp(vecMultMtr(P[j], tMatrix));
-            values += 'M '+CP.join(' ') + ' ';
+            values += ' M '+CP.join(' ') + ' ';
+
         } else {
             let pO = pLayer.toComp(vecMultMtr(O[j - 1], tMatrix));
             let pI = pLayer.toComp(vecMultMtr(I[j], tMatrix));
@@ -141,35 +128,20 @@ for (let i = 0; i < propKeytimes.length; i++) {
             values += ' C '+pO.join(' ') + ' , ' + pI.join(' ') + ',' + pP.join(' ');
         }
     }
-    values += ' ;';
-    keyTimes += propKeytimes[i]/(propKeytimes[propKeytimes.length-1]-propKeytimes[0] )+ ((i < propKeytimes.length-1 )&& ';');
+    values += ';';
+    keyTimes += keyTimesArr[i] / (keyTimesArr[keyTimesArr.length - 1] - keyTimesArr[0]) + ((i < keyTimesArr.length - 1) && ';');
 }
 
-
-
-begin = keyTimeDura=='CompDura'?0:prop.key(1).time - pLayer.inPoint;
-dur = keyTimeDura=='CompDura'?thisComp.duration:(prop.key(prop.numKeys).time - prop.key(1).time);
-
-/** 路径检测 */function 路径测试() {
-    i = 1
-    var testingTxt = '';
-    while (typeof (prop.propertyGroup(i).hasParent) == 'undefined') {
-        testingTxt += prop.propertyGroup(i).name;
-        if (typeof (prop.propertyGroup(i).transform) != 'undefined') {
-            testingTxt += 'yes!!; \n ';
-        } else {
-            testingTxt += '\n';
-        }
-        i++;
-    }
-    testingTxt;
-    values;
-}
-//transformTxt;
+begin = keyTimeDura == 'CompDura' ? 0 : prop.key(1).time - pLayer.inPoint;
+dur = keyTimeDura == 'CompDura' ? thisComp.duration : (prop.key(prop.numKeys).time - prop.key(1).time);
 
 var beforeText = '<animate attributeName="d" attributeType="XML" ';
 var afterText = 'repeatCount="indefinite" fill="freeze"></animate>';
+var result = (beforeText +
+    ' values="' + values + '\n"' +
+    ' keyTimes="' + keyTimes + '"' +
+    ' begin="' + begin + '"' +
+    ' dur="' + dur + '" ' +
+    afterText);
 
-
-var result = beforeText + ' values="' + values + '\n"' + ' keyTimes="' + keyTimes + '"' + ' begin="' + begin + '"' + ' dur="' + dur + '" ' + afterText;
 result;
