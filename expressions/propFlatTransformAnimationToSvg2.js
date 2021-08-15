@@ -1,3 +1,8 @@
+var setup = { keyTimeDura: { 'CompDura': true, 'keyDura': false } };
+var prop = eval(parent.name);
+
+var precision=2;
+var timePrecision=4;
 function mtrMultMtr(matrixA, matrixB) { [...arguments].map((function (arg) { var endM; 6 == arg.length && [0, 0, 1].map((i, idx) => arg.splice(3 * idx + 2, 0, i)) })); let res = [], b = 0, l = matrixA.length, L = Math.pow(l, .5); for (let k = 0; k < l; k++) { let a = Math.floor(k / L), N = 0; for (let j = 0; j < l; j += L)N += matrixA[a * L + j / L] * matrixB[b + j]; b++, b == L && (b = 0), res.push(N) } return res }
 
 function mtrMults() { var arg = [...arguments], result; return arg.splice(0, 2), result = arguments.length > 1 ? arguments.length > 2 ? mtrMults(mtrMultMtr(arguments[0], arguments[1]), ...arg) : mtrMultMtr(arguments[0], arguments[1]) : arguments[0] }
@@ -87,10 +92,11 @@ function propAndGroupKeyTimes(prop) {
 function propLayerInThisComp(prop) { var i = 0; while (typeof (prop.propertyGroup(i + 1).hasParent) == 'undefined') { i++ } var result = thisComp.layer(prop.propertyGroup(i + 1).name); return result; }
 
 
-var setup = { keyTimeDura: { 'CompDura': true, 'keyDura': false } };
+
+
 var keyTimeDura = Object.keys(setup.keyTimeDura).map(i => setup.keyTimeDura[i] == true ? i : '').filter(Boolean)[0];
 
-var prop = thisComp.layer("sourcePath2").content("组 1").content("组 1").content('path').path;
+
 var pLayer = propLayerInThisComp(prop);
 
 var P, I, O, values = '', keyTimes = '', begin = '', dur = '';
@@ -116,20 +122,19 @@ for (let i = 0; i < keyTimesArr.length; i++) {
         return p;
     })
     for (let j = 0; j < P.length; j++) {
-        values += '\n';
-        let CP = pLayer.toComp(vecMultMtr(P[j], tMatrix));
+        let CP = pLayer.toComp(vecMultMtr(P[j], tMatrix)).map(z=>z.toFixed(precision));
         if (j == 0) {
             values += ' M '+CP.join(' ') + ' ';
 
         } else {
-            let pO = pLayer.toComp(vecMultMtr(O[j - 1], tMatrix));
-            let pI = pLayer.toComp(vecMultMtr(I[j], tMatrix));
-            let pP = pLayer.toComp(vecMultMtr(P[j], tMatrix));
+            let pO = pLayer.toComp(vecMultMtr(O[j - 1], tMatrix)).map(z=>z.toFixed(precision));
+            let pI = pLayer.toComp(vecMultMtr(I[j], tMatrix)).map(z=>z.toFixed(precision));
+            let pP = pLayer.toComp(vecMultMtr(P[j], tMatrix)).map(z=>z.toFixed(precision));
             values += ' C '+pO.join(' ') + ' , ' + pI.join(' ') + ',' + pP.join(' ');
         }
     }
-    values += ';';
-    keyTimes += keyTimesArr[i] / (keyTimesArr[keyTimesArr.length - 1] - keyTimesArr[0]) + ((i < keyTimesArr.length - 1) && ';');
+    values += ';\n';
+    keyTimes += (keyTimesArr[i] / (keyTimesArr[keyTimesArr.length - 1] - keyTimesArr[0])).toFixed(timePrecision) + ((i < keyTimesArr.length - 1) ? ';':'');
 }
 
 begin = keyTimeDura == 'CompDura' ? 0 : prop.key(1).time - pLayer.inPoint;
