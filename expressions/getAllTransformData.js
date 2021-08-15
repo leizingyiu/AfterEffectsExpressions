@@ -18,12 +18,14 @@ function aePropGroupTransformsMatrix(prop) {
     var i = 1, p, tMatrix = [];
     while (typeof (prop.propertyGroup(i).hasParent) == 'undefined') {
         p = prop.propertyGroup(i);
-        range(1, p.numProperties, 1).map(j => (j, tMatrix = p(j).name == '变换' ? transformMatrix(p(j),tMatrix) : tMatrix));
+        range(1, p.numProperties, 1).map(j => (j, tMatrix = p(j).name == '变换' ? transformMatrix(p(j), tMatrix) : tMatrix));
         i++;
     }
     arrToStrInMtr(tMatrix, 3);
     return tMatrix;
 }
+
+
 function anchor(x, y) { return [1, 0, 0, 0, 1, 0, -x, -y, 1]; }
 function scale(x, y) { return [x, 0, 0, 0, y, 0, 0, 0, 1] }
 function translate(x, y) { return [1, 0, 0, 0, 1, 0, x, y, 1] }
@@ -46,11 +48,23 @@ function transformMatrix(transformPropGroup, origMatrix) {
         daSkew = transformPropGroup.skew.value,
         daSkewAxis = transformPropGroup.skewAxis.value,
         daRotate = transformPropGroup.rotation.value;
-    origMatrix = typeof origMatrix == 'undefined'||origMatrix.length==0 ? [1, 0, 0, 0, 1, 0, 0, 0, 1] : origMatrix;
+    origMatrix = typeof origMatrix == 'undefined' || origMatrix.length == 0 ? [1, 0, 0, 0, 1, 0, 0, 0, 1] : origMatrix;
     return mtrMults(origMatrix, anchor(...daAnchor), skew(daSkew, daSkewAxis), scale(...daScale.map(i => i / 100)), rotate(daRotate), translate(...daPosition));
 }
-var range = (min, max, step) => [...new Array(Math.floor((max + step - min) / step))].map((n, idx) => idx * step + min);
 
+function transformMatrixByKeys(transformPropGroup, origMatrix) {
+
+    var daPosition = transformPropGroup.position.value,
+        daAnchor = transformPropGroup.anchorPoint.value,
+        daScale = transformPropGroup.scale.value,
+        daSkew = transformPropGroup.skew.value,
+        daSkewAxis = transformPropGroup.skewAxis.value,
+        daRotate = transformPropGroup.rotation.value;
+    origMatrix = typeof origMatrix == 'undefined' || origMatrix.length == 0 ? [1, 0, 0, 0, 1, 0, 0, 0, 1] : origMatrix;
+    return mtrMults(origMatrix, anchor(...daAnchor), skew(daSkew, daSkewAxis), scale(...daScale.map(i => i / 100)), rotate(daRotate), translate(...daPosition));
+}
+
+var range = (min, max, step) => [...new Array(Math.floor((max + step - min) / step))].map((n, idx) => idx * step + min);
 
 var i = 1;
 var p;
@@ -79,3 +93,40 @@ P.map(function (p, idx) {
 var tMatrix = aePropGroupTransformsMatrix(pathProp);
 
 [P, I, O].map(arr => arr.map(a => vecMultMtr(a, tMatrix)))
+
+
+
+/**___ */
+
+var prop = thisComp.layer("sourcePath2").content("组 1").content("组 1").content('path').path;
+
+var range = (min, max, step) => [...new Array(Math.floor((max + step - min) / step))].map((n, idx) => idx * step + min);
+
+var txt = '';
+var i = 1;
+var p;
+var t, T;
+var transformObj = {};
+var keyTimesArr=[];
+while (typeof (prop.propertyGroup(i).hasParent) == 'undefined') {
+    p = prop.propertyGroup(i);
+    t = '';
+    P = range(1, p.numProperties, 1).map(i => ' [' + p(i) + '.name=' + p(i).name + '] ');
+    t = range(1, p.numProperties, 1).map(i => p(i).name == '变换' ? (range(1, p(i).numProperties, 1).map(j => p(i)(j).name + ':' + p(i)(j).value)) : '');
+    T = ('undefined' != typeof p.transform) && (range(1, p.transform.numProperties, 1).map(j=>range(1,p.transform(j).numKeys,1).map(k=>keyTimesArr.push(p.transform(j).keyTimesArr(k).time))));
+    
+
+
+    t = range(1, p.numProperties, 1).map(i => p(i).name == '变换' ? (range(1, p(i).numProperties, 1).map(function (j) {
+        transformObj[p(i)(j).name] = typeof transformObj[p(i)(j).name] == "undefined" ? p(i)(j).value : add(transformObj[p(i)(j).name] , p(i)(j).value);
+        return p(i)(j).name + ':' + p(i)(j).value
+    })) : '');
+
+    //txt ='propertyGroup('+i+'): '+ p.name + '\n numProp=' + p.numProperties + '\n\t' + P.join('\n\t') + (t!=''?('\n t:' + t):'') + '\n\n' + txt;
+    txt += T;
+    i++
+}
+txt;
+keyTimesArr;
+//JSON.stringify(transformObj,' ',4);
+

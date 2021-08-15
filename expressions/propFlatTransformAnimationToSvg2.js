@@ -131,22 +131,17 @@ for (let i = 0; i < propKeytimes.length; i++) {
 
     for (let j = 0; j < P.length; j++) {
         values += '\n';
-        let CP = pLayer.toComp(vecMultMtr(P[j], tMatrix));
-
         if (j == 0) {
-            values += 'M';
-            values += CP.join(' ') + ' ';
-
+            let CP = pLayer.toComp(vecMultMtr(P[j], tMatrix));
+            values += 'M '+CP.join(' ') + ' ';
         } else {
             let pO = pLayer.toComp(vecMultMtr(O[j - 1], tMatrix));
             let pI = pLayer.toComp(vecMultMtr(I[j], tMatrix));
             let pP = pLayer.toComp(vecMultMtr(P[j], tMatrix));
-            values += 'C'
-            values += pO.join(' ') + ' , ' + pI.join(' ') + ',' + pP.join(' ');
+            values += ' C '+pO.join(' ') + ' , ' + pI.join(' ') + ',' + pP.join(' ');
         }
     }
-    values += ';';
-
+    values += ' ;';
     keyTimes += propKeytimes[i]/(propKeytimes[propKeytimes.length-1]-propKeytimes[0] )+ ((i < propKeytimes.length-1 )&& ';');
 }
 
