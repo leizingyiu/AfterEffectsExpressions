@@ -277,6 +277,7 @@ function imgSrcToOnline(content) {
     /*location.protocol + "//" + location.hostname + location.pathname*/
 }
 
+/** TODO  */
 function imgScrSwitch(content) {
     var result = '';
     var reg = /(?<=<img.*?src=['"])(https:\/\/pic\.leizingyiu\.net)([^'"]*)(?=['"][^>]+>)/g;
