@@ -281,7 +281,7 @@ function imgSrcToOnline(content) {
 function imgScrSwitch(content) {
     var result = '';
     var reg = /(?<=<img.*?src=['"])(https:\/\/pic\.leizingyiu\.net)([^'"]*)(?=['"][^>]+>)/g;
-    var preLink = (location.host.match('leizingyiu.net') ? 'pic.leizingyiu.net' : protocolAndHostAndPath);
+    var preLink = ((location.host.match('leizingyiu.net') != null || location.host.match(/a-zA-Z/g) == null) ? 'pic.leizingyiu.net' : protocolAndHostAndPath);
     console.log(preLink);
     result = content.replace(reg, preLink + '$2');
     return result;
