@@ -353,6 +353,7 @@ function writeTitleAndExpressions(content) {
                     };
                 }
                 Object.keys(parameter['expressions'][js]).map((key, idx) => (function () {
+                    if (key == 'order') { return '' };
                     if (parameter['expressions'][js][key] instanceof Array) {
                         parameter['expressions'][js][key].map(v => (function () {
                             let text = key + ' ' + v.match(/(?<=\.).*/);
@@ -376,8 +377,10 @@ function writeTitleAndExpressions(content) {
                     var content = arguments[arguments.length - 1]['response'];
                     var status = arguments[arguments.length - 1]['status'];
                     script = status == '200' ? content : '大概是写错东西了吧。･ﾟ･(つд`ﾟ)･ﾟ･';
-                    pre.innerText = script;
+
+                    pre.innerHTML = script;
                     div.setAttribute('title', js); /**这里设置expression的标题 */
+                    div.style.order = parameter['expressions'][js]['order'];
                     expressionsDom.appendChild(div);
                     div.appendChild(pre);
 
@@ -502,7 +505,12 @@ function scrollContentTop(content) {
     document.querySelector('.markdown-body').scrollTop = 0;
     return content;
 }
-
+function preCommentToTagI(content) {
+    // script = script.replace(/(\/\/.*)/g, '<i>$1</i>');
+    // console.log(script.match(/(\/\/.*)/g));
+    /** TODO */
+    return content;
+}
 function returnFnFromArgs() {
     var arg = arguments;
     return function (content) {
