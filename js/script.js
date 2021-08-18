@@ -366,7 +366,7 @@ function writeTitleAndExpressions(content) {
                     }
                 })())
 
-                let expressionUrl = protocolAndHostAndPath + '/expressions/' + js;
+                let expressionUrl = protocolAndHostAndPath + 'expressions/' + js;
                 console.log(expressionUrl);
 
                 let script = '';
